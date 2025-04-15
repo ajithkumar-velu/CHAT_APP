@@ -1,5 +1,5 @@
-import Chat from "../models/chat.js";
-import Message from "../models/message.js";
+import Chat from "../models/ChatModel.js";
+import Message from "../models/MessageModel.js";
 
 export const postChat = async (req, res) => {
     try {

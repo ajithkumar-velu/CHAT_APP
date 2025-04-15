@@ -1,5 +1,5 @@
 import getentateToken from "../config/genterateToken.js";
-import User from "../models/User.js";
+import User from "../models/UserModel.js";
 import bcrypt from 'bcryptjs'
 
 export const register = async (req, res) => {
