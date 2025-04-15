@@ -6,7 +6,9 @@ const getentateToken = async (userId, res)=>{
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
         secure: true,
-        sameSite: 'strict' 
+        sameSite: 'None' 
+        // sameSite: 'strict' 
     })
+    return token
 }
 export default getentateToken
