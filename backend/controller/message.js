@@ -4,7 +4,7 @@ import Message from "../models/MessageModel.js";
 export const createMessage = async (req, res) => {
     try {
         const { message, chatId } = req.body
-        if(!message) return req.status(400).json({ message: "Message is required"})
+        if(!message || !chatId) return req.status(400).json({ message: "Message and chatId are required"})
         
         const newMessage = new Message({
             sender: req.user._id,
@@ -23,6 +23,7 @@ export const createMessage = async (req, res) => {
             path:"chat",
             populate: {path: "users groupAdmin", select:"-password"}
         })
+        res.status(201).json(fullMessage)
     } catch (error) {
         console.log("Error in createMessage", error);
         res.status(500).json({ message: "Internal server Error" })
@@ -30,7 +31,7 @@ export const createMessage = async (req, res) => {
 }
 export const allMessage = async (req, res) => {
     try {
-        const {chatId} = req.body
+        const {chatId} = req.params
         const messages = await Message.find({chat: chatId})
         .populate("sender", "-password")
         .populate("chat")

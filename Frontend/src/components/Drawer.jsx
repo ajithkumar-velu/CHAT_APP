@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { images } from '../assets/assets';
+import useChatMutation from '../hooks/chatHook';
 
 const Drawer = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDrawer = () => setIsOpen(!isOpen);
   const closeDrawer = () => setIsOpen(false);
-
-  
-
   return (
     <div className=" absolute top-0 right-0 h-full w-full rounded shadow mx-auto overflow-hidden">
       {/* Toggle Button */}

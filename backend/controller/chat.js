@@ -28,11 +28,11 @@ export const postChat = async (req, res) => {
                 users: [req.user._id, userId]
             })
             await newChat.save()
-            const chatAll = await Chat.findById({ _id: newChat._id }).populate("users", "-password")
-            return res.status(201).json({ chatAll })
+            const chat = await Chat.findById({ _id: newChat._id }).populate("users", "-password")
+            return res.status(201).json(chat )
         } else {
             const chat = existingChat[0]
-            return res.status(200).json({ chat })
+            return res.status(200).json(chat )
         }
     } catch (error) {
         console.log("Error in PostChat", error);
@@ -53,7 +53,7 @@ export const getChat = async (req, res) => {
                     select: "-password"
                 }
             }).populate("groupAdmin", "-password")
-        res.status(200).json({ chat })
+        res.status(200).json(chat)
     } catch (error) {
         console.log("Error in getChat", error);
         res.status(500).json({ message: "Internal server Error" })

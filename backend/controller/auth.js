@@ -41,8 +41,10 @@ export const login = async (req, res) => {
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" })
 
         getentateToken(user._id, res)
-        
-        return res.status(200).json({ message: "Login Successfull", fullname: user.fullname, email: user.email, about: user.about, profile: user.profile })
+
+        let userInfo = await User.findById(user._id).select("-password")
+
+        return res.status(200).json({ message: "Login Successfull", userInfo})
 
     } catch (error) {
         console.log("Error in login", error);

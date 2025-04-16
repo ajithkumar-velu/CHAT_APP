@@ -11,9 +11,9 @@ export const getAuthUser = async (req, res) => {
 }
 export const getAllUsers = async (req, res) => {
     try {
-        const allUsera = await User.find({_id: {$ne: req.user._id}})
-        .populate("-password")
-        .sort({_id: -1})
+        const allUsers = await User.find({_id: {$ne: req.user._id}})
+        .select("-password")
+        .sort({_id: 1})
         res.status(200).json(allUsers)
     } catch (error) {
         console.log("Error in getAllUsers", error);

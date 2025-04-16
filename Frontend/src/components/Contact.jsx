@@ -1,10 +1,47 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { images } from '../assets/assets'
+import { MessageSquarePlus } from 'lucide-react'
+import NewChat from './NewChat'
+import useChatMutation from '../hooks/chatHook'
+import { useDispatch, useSelector } from 'react-redux'
+import { setNewChatOpen } from '../redux/slices/conditionSlice'
+import { getChatImage, getChatName } from '../utils/getNameImage'
+import NewChatSkeleton from './skeleton/NewChatSkeleton'
+import useMessageMutation from '../hooks/messageHooks'
+import { addSelectedChat } from '../redux/slices/chatSlice'
 
 const Contact = () => {
   const [isType, setIsType] = useState('allChats')
+  const { getChats } = useChatMutation()
+  const { getAllMessage } = useMessageMutation()
+  const isgetMyChatUsers = useSelector(state => state.condition.isgetMyChatUsers)
+
+  const isOpen = useSelector(state => state.condition.newChatOpen)
+  const authUserId = useSelector(state => state.auth.auth.userInfo._id)
+  const myChatsUsers = useSelector(state => state.myChat.chat)
+
+  const dispatch = useDispatch()
+  const toggleDrawer = () => dispatch(setNewChatOpen(!isOpen));
+
+
+
+  useEffect(() => {
+    getChats.mutateAsync()
+  }, [])
+  
+  
+  const handleOnclickGetUserMessages = (id) => {
+    console.log(id._id);
+    
+      dispatch(addSelectedChat(id))
+      getAllMessage.mutateAsync(id._id)
+
+  }
   return (
-    <div className='bg-base-300 max-w-2xs w-full py-5 flex flex-col gap-3 px-2 overflow-y-auto' >
+    <div className='bg-base-300 max-w-2xs w-full py-5 flex flex-col gap-3 px-2 overflow-y-auto relative' >
+
+
+      <NewChat />
 
       {/* Search bar */}
       <div className='flex justify-center px-1' >
@@ -16,7 +53,12 @@ const Contact = () => {
 
       {/* chat type */}
       <div className='px-1 flex flex-col gap-2' >
-        <h1 className='text-xl font-semibold' >Message</h1>
+        <h1 className='text-xl font-semibold flex items-center justify-between py-2' >
+          <p>Chats</p>
+          <div className='btn btn-ghost btn-circle' onClick={toggleDrawer} >
+            <MessageSquarePlus />
+          </div>
+        </h1>
         <div className='flex bg-base-100 py-1 px-2 rounded-full justify-between items-center text-xs transition-all duration-300' >
           <p onClick={() => setIsType("allChats")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${isType === "allChats" ? "bg-base-300" : ""}`} >All Chats</p>
           <p onClick={() => setIsType("groups")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${isType === "groups" ? "bg-base-300" : ""}`} >Groups</p>
@@ -25,20 +67,24 @@ const Contact = () => {
       </div>
 
       {/* cantacts */}
-      <div className='mt-3 flex flex-col gap-2' >
-        {Array(6).fill(null).map((val, idxx) => (
+      {
+        isgetMyChatUsers ?
+          <NewChatSkeleton />
+          :
+          <div className='mt-3 flex flex-col gap-2 overflow-y-auto' >
+            {myChatsUsers.map((user, idxx) => (
 
-          <div key={idxx} className='px-3 py-3 bg-base-200 rounded-xl flex items-center gap-2' >
-            <div className='size-12 rounded-full' >
-              <img src={images.avatar} alt="" />
-            </div>
-            <div >
-              <p className='text-[17px] text-zinc-300 font-semibold' >Arun Kumar</p>
-              <p className='text-xs text-zinc-400' >What about today</p>
-            </div>
-          </div>
-        ))}
-      </div>
+              <div key={idxx} onClick={() => handleOnclickGetUserMessages(user)} className='px-3 py-3 bg-base-200 rounded-xl flex items-center gap-2 hover:bg-base-100 cursor-pointer' >
+                <div className='size-12 rounded-full overflow-hidden' >
+                  <img src={getChatImage(user, authUserId) || images.avatar} alt="" />
+                </div>
+                <div >
+                  <p className='text-[17px] text-zinc-300 font-semibold' >{getChatName(user, authUserId)}</p>
+                  {/* <p className='text-xs text-zinc-400' >{user.latestMessage || "No message"}</p> */}
+                </div>
+              </div>
+            ))}
+          </div>}
     </div>
   )
 }

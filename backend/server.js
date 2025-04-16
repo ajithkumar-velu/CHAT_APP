@@ -8,12 +8,14 @@ import authRoute from "./routes/authRoute.js"
 import chatRoute from "./routes/chatRoute.js"
 import messageRoute from "./routes/messageRoute.js"
 import userRoute from "./routes/userRoute.js"
+import { createUsers } from "./test.js"
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3000
 
 
 connectDb()
+// createUsers()
 app.use(bodyParser.urlencoded({ extended: true, limit: "6mb"}))
 app.use(cookieParser())
 app.use(express.json())
