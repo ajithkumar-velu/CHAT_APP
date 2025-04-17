@@ -8,7 +8,7 @@ import authRoute from "./routes/authRoute.js"
 import chatRoute from "./routes/chatRoute.js"
 import messageRoute from "./routes/messageRoute.js"
 import userRoute from "./routes/userRoute.js"
-import { createUsers } from "./test.js"
+// import { createUsers } from "./test.js"
 import { Server } from 'socket.io'
 import { createServer } from 'http'
 dotenv.config()
