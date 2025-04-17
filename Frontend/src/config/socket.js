@@ -7,7 +7,8 @@ import { io } from 'socket.io-client'
 //     reconnectionDelay: 1000,  // Time between retries
 // })
 
-const socket = io('http://localhost:3000', {
+// const socket = io('http://localhost:3000', { 
+const socket = io('https://chat-app-backend-la16.onrender.com', {
     reconnectionDelay: 1000,
 	reconnection: true,
 	reconnectionAttempts: 10,
