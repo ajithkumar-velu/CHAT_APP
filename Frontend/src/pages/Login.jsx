@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import useAuthMutations from '../hooks/authHook'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
     const [fromData, setFormData] = useState({
@@ -29,6 +30,7 @@ const Login = () => {
 
                     <label className="fieldset-label">Password</label>
                     <input onChange={handleOnchange} value={fromData.password} name='password' type="password" className="input" placeholder="Password" />
+                    <p className='text-right' >Don't have an account? <Link to={"/signup"} className='link link-info' >Sign Up</Link></p>
 
                     <button onClick={handleLogin} className="btn btn-neutral mt-4">Login</button>
                 </fieldset>
