@@ -7,11 +7,12 @@ import useAuthMutations from '../hooks/authHook'
 const Navbar = () => {
   const isLogoutBtn = useSelector(state => state.auth.isautenticated)
   const { logoutUser} =  useAuthMutations()
+  const { selectedChat } = useSelector(state=>state.myChat)
   const handleLogout = ()=>{
     logoutUser.mutateAsync()
   } 
   return (
-    <div className='h-full max-w-14 w-full bg-base-300 flex flex-col items-center justify-between py-5' >
+    <div className={`h-full max-w-14 w-full bg-base-300 flex-col items-center justify-between py-5 hidden md:flex`} >
       <div className='flex flex-col items-center gap-5' >
         <div className='max-w-10 w-full' ><img src={images.logo} alt="" /></div>
         <div className='mt-8' ><Home className='size-7' /></div>

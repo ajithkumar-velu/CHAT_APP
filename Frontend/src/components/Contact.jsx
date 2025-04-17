@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { images } from '../assets/assets'
-import { MessageSquarePlus } from 'lucide-react'
+import { EllipsisVertical, LogOut, MessageSquarePlus } from 'lucide-react'
 import NewChat from './NewChat'
 import useChatMutation from '../hooks/chatHook'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +9,7 @@ import { getChatImage, getChatName } from '../utils/getNameImage'
 import NewChatSkeleton from './skeleton/NewChatSkeleton'
 import useMessageMutation from '../hooks/messageHooks'
 import { addSelectedChat } from '../redux/slices/chatSlice'
+import useAuthMutations from '../hooks/authHook'
 
 const Contact = () => {
   const [isType, setIsType] = useState('allChats')
@@ -19,6 +20,8 @@ const Contact = () => {
   const isOpen = useSelector(state => state.condition.newChatOpen)
   const authUserId = useSelector(state => state.auth.auth.userInfo._id)
   const myChatsUsers = useSelector(state => state.myChat.chat)
+  const { selectedChat } = useSelector(state => state.myChat)
+  const { logoutUser} =  useAuthMutations()
 
   const dispatch = useDispatch()
   const toggleDrawer = () => dispatch(setNewChatOpen(!isOpen));
@@ -28,27 +31,41 @@ const Contact = () => {
   useEffect(() => {
     getChats.mutateAsync()
   }, [])
-  
-  
+
+
   const handleOnclickGetUserMessages = (id) => {
     console.log(id._id);
-    
-      dispatch(addSelectedChat(id))
-      getAllMessage.mutateAsync(id._id)
+
+    dispatch(addSelectedChat(id))
+    getAllMessage.mutateAsync(id._id)
 
   }
+  const handleLogout = ()=>{
+    logoutUser.mutateAsync()
+  } 
   return (
-    <div className='bg-base-300 max-w-2xs w-full py-5 flex flex-col gap-3 px-2 overflow-y-auto relative' >
+    <div className={`bg-base-300 md:max-w-2xs w-full py-5  flex-col gap-3 px-2 overflow-y-auto relative ${selectedChat ? "md:flex hidden" : "flex"}`} >
 
 
       <NewChat />
 
       {/* Search bar */}
-      <div className='flex justify-center px-1' >
+      <div className='flex justify-between items-center px-1' >
         <label className="input h-10 rounded-full bg-base-200">
           <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></g></svg>
           <input type="search" required placeholder="Search" />
         </label>
+
+        {/* Mobile screen dropdown */}
+        <div className="dropdown dropdown-end md:hidden">
+        
+          <div tabIndex={0} role="button" className="m-1"><EllipsisVertical /></div>
+          <ul tabIndex={0} className="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-sm">
+            <li onClick={handleLogout} ><a>Logout</a></li>
+            <li><a>Item 2</a></li>
+          </ul>
+        </div>
+        
       </div>
 
       {/* chat type */}

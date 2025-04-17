@@ -1,8 +1,9 @@
 import { useDispatch } from "react-redux"
 import { useMutation } from '@tanstack/react-query'
 import { performCreateMessage, performGetAllMessages } from "../api/message"
-import { addAllMessages } from "../redux/slices/messageSlice"
+import { addAllMessages, addNewMessage, addNewMessageId } from "../redux/slices/messageSlice"
 import toast from "react-hot-toast"
+import socket from "../config/socket"
 const useMessageMutation = () => {
     const dispatch = useDispatch()
 
@@ -22,7 +23,9 @@ const useMessageMutation = () => {
     const createMessage = useMutation({
         mutationFn: performCreateMessage,
         onSuccess: (data)=>{
-            // dispatch(addAllMessages)
+            dispatch(addNewMessageId(data))
+            dispatch(addNewMessage(data))
+            socket.emit("new message", data);
             console.log(data);
         },
         onError: (err)=>{
