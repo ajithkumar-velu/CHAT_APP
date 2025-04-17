@@ -23,9 +23,9 @@ const useMessageMutation = () => {
     const createMessage = useMutation({
         mutationFn: performCreateMessage,
         onSuccess: (data)=>{
-            dispatch(addNewMessageId(data))
             dispatch(addNewMessage(data))
             socket.emit("new message", data);
+            dispatch(addNewMessageId(data))
             console.log(data);
         },
         onError: (err)=>{
