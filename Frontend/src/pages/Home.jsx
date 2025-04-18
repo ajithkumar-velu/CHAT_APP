@@ -2,9 +2,6 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import Contact from '../components/Contact'
 import Chat from '../components/Chat'
-import Login from './Login'
-import Signup from './Signup'
-import socket from '../config/socket'
 import { useSelector } from 'react-redux'
 
 const Home = () => {

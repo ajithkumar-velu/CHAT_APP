@@ -7,7 +7,6 @@ const getentateToken = async (userId, res)=>{
         maxAge: 24 * 60 * 60 * 1000,
         secure: true,
         sameSite: process.env.SAMESITE 
-        
     })
     return token
 }
