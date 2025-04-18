@@ -22,8 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "6mb" }))
 app.use(cookieParser())
 app.use(express.json())
 app.use(cors({
-    // origin: ["http://localhost:5173"],
-    origin: ["https://chat-app-frontend-qss7.onrender.com"],
+    origin: [process.env.FRONTEND_URL],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
 }))
@@ -41,8 +40,7 @@ app.get("", (req, res) => {
 
 const io = new Server(server, {
     cors: {
-        // origin: "http://localhost:5173",
-        origin: ["https://chat-app-frontend-qss7.onrender.com"],
+        origin: process.env.FRONTEND_URL,
         credentials: true,
         methods: ["GET", "POST", "PUT", "DELETE"],
     }

@@ -1,14 +1,7 @@
 import { io } from 'socket.io-client'
 
-// const socket = io("http://localhost:3000", {
-//     autoConnect: false,  // Optional: Connect manually
-//     withCredentials: true,  // If using cookies
-//     reconnectionAttempts: 5,  // Number of retries
-//     reconnectionDelay: 1000,  // Time between retries
-// })
+const socket = io(import.meta.env.BACKEND_URL, { 
 
-// const socket = io('http://localhost:3000', { 
-const socket = io('https://chat-app-backend-la16.onrender.com', {
     reconnectionDelay: 1000,
 	reconnection: true,
 	reconnectionAttempts: 10,

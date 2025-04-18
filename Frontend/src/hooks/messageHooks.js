@@ -23,8 +23,8 @@ const useMessageMutation = () => {
     const createMessage = useMutation({
         mutationFn: performCreateMessage,
         onSuccess: (data)=>{
-            dispatch(addNewMessage(data))
             socket.emit("new message", data);
+            dispatch(addNewMessage(data))
             dispatch(addNewMessageId(data))
             console.log(data);
         },
