@@ -3,7 +3,7 @@ import { images } from '../assets/assets'
 import { Check, X } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import useChatMutation from '../hooks/chatHook'
-import { addGroupName, resetGroupData } from '../redux/slices/chatSlice'
+import { addGroupDescription, addGroupName, resetGroupData } from '../redux/slices/chatSlice'
 import { setIsGroup, setNewChatOpen } from '../redux/slices/conditionSlice'
 
 const CreateGroupModal = () => {
@@ -30,7 +30,7 @@ const CreateGroupModal = () => {
       <div className="modal-box bg-base-300">
         <div className='flex items-center justify-between' >
 
-          <h3 className="font-bold text-lg">New Group</h3>
+          <h3 className="font-bold text-2xl">New Group</h3>
 
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
@@ -46,6 +46,7 @@ const CreateGroupModal = () => {
         </div>
         <div className='flex flex-col items-center justify-center'>
           <input onChange={(e) => dispatch(addGroupName(e.target.value))} value={groupData.chatName} type="text" placeholder="Group Name" className="input border-0 border-b-2 bg-base-300 outline-0 focus:outline-0" />
+          <input onChange={(e) => dispatch(addGroupDescription(e.target.value))} value={groupData.description} type="text" placeholder="Group Description" className="input border-0 border-b-2 bg-base-300 outline-0 focus:outline-0" />
           <p className="py-4">Number of Users {createGroupUsersData?.users?.length}</p>
         </div>
 

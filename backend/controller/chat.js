@@ -75,6 +75,7 @@ export const createGroup = async (req, res) => {
             isGroupChat: true,
             users: req.body.users,
             groupAdmin: req.user._id,
+            description: req.body.description
         })
         await groupChat.save()
 
@@ -94,7 +95,7 @@ export const deleteGroup = async (req, res) => {
         const chatId = req.params.chatId
         await Message.deleteMany({ chat: chatId })
         await Chat.deleteOne({ _id: chatId })
-        return res.success(200).json({ message: "Group deleted successfully" })
+        return res.status(200).json({ message: "Group deleted successfully" })
     } catch (error) {
         console.log("Error in deleteGroup", error);
         res.status(500).json({ message: "Internal server Error" })

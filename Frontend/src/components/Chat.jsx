@@ -123,20 +123,21 @@ const Chat = () => {
 
         <div className=" relative">
 
-          <div onClick={()=>dispatch(setIsChatThreeDotOpen(true))} className="m-1 cursor-pointer"><EllipsisVertical /></div>
-          <ul className={` absolute right-0 menu bg-base-300 rounded-box z-1 w-52 p-2 shadow-sm ${isChatThreeDotOpen? "": "hidden"}`}>
-            <li onClick={toggleDrawer} ><a onClick={()=>dispatch(setIsChatThreeDotOpen(false))} className=' flex items-center gap-3' >
+
+          <div onClick={() => dispatch(setIsChatThreeDotOpen(!isChatThreeDotOpen))} className="m-1 cursor-pointer"><EllipsisVertical /></div>
+          <ul className={` absolute right-0 menu bg-base-300 rounded-box z-1 w-52 p-2 shadow-sm ${isChatThreeDotOpen ? "" : "hidden"}`}>
+            <li onClick={toggleDrawer} ><a onClick={() => dispatch(setIsChatThreeDotOpen(false))} className=' flex items-center gap-3' >
               <p><Info /></p>
               <p>{selectedChat.isGroupChat ? "Group Info" : "Contact Info"}</p>
             </a></li>
             <li>
-              <a onClick={()=>dispatch(setIsChatThreeDotOpen(false))} className='flex items-center gap-3' >
+              <a onClick={() => dispatch(setIsChatThreeDotOpen(false))} className='flex items-center gap-3' >
                 <p><CircleMinus /> </p>
                 <p>Clear chat</p>
               </a>
             </li>
-            <li onClick={()=>dispatch(resetSelectedChat())} >
-              <a onClick={()=>dispatch(setIsChatThreeDotOpen(false))} className='flex items-center gap-3' >
+            <li onClick={() => dispatch(resetSelectedChat())} >
+              <a onClick={() => dispatch(setIsChatThreeDotOpen(false))} className='flex items-center gap-3' >
                 <p><CircleX /> </p>
                 <p>Close chat</p>
               </a>
@@ -161,7 +162,7 @@ const Chat = () => {
                   </p>
                 </div>
                 {messages[message].map((msg, idx) => (
-                  <div key={idx} className={`chat ${authUserId !== msg.sender._id ? "chat-start": "chat-end" }`}>
+                  <div key={idx} className={`chat ${authUserId !== msg.sender._id ? "chat-start" : "chat-end"}`}>
                     <div className="chat-image avatar">
                       <div className="w-10 rounded-full">
                         <img src={msg.sender.profile || images.avatar} />
@@ -176,7 +177,7 @@ const Chat = () => {
                       <p>{msg.message}</p>
 
                     </div>
-                    <div className="chat-footer opacity-50">Delivered</div>
+                    {authUserId === msg.sender._id && <div className="chat-footer opacity-50">Delivered</div>}
                   </div>
                 ))}
                 <div ref={bottomRef} ></div>
