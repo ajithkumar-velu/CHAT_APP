@@ -1,6 +1,7 @@
 import Chat from "../models/ChatModel.js";
 import Message from "../models/MessageModel.js";
 
+// add chat
 export const postChat = async (req, res) => {
     try {
         const { userId } = req.body
@@ -28,11 +29,11 @@ export const postChat = async (req, res) => {
                 users: [req.user._id, userId]
             })
             await newChat.save()
-            const chat = await Chat.findById({ _id: newChat._id }).populate("users", "-password")
+            const chat = await Chat.findOne({ _id: newChat._id }).populate("users", "-password")
             return res.status(201).json(chat )
         } else {
             const chat = existingChat[0]
-            return res.status(200).json(chat )
+            return res.status(200).json(chat)
         }
     } catch (error) {
         console.log("Error in PostChat", error);
@@ -53,23 +54,25 @@ export const getChat = async (req, res) => {
                     select: "-password"
                 }
             }).populate("groupAdmin", "-password")
+        
         res.status(200).json(chat)
     } catch (error) {
         console.log("Error in getChat", error);
         res.status(500).json({ message: "Internal server Error" })
     }
-}
+}   
 
 export const createGroup = async (req, res) => {
     try {
         const users = req.body.users
-        if (!req.body.users || !req.body.name) return res.status(400).json({ message: "users and name are required" })
+        users.push(req.user._id)
+        if (!req.body.users || !req.body.chatName) return res.status(400).json({ message: "users and name are required" })
 
         if (users.length < 2) return res.status(400).json({ message: "At least 2 users are required to create a group" })
 
         const groupChat = new Chat({
             chatName: req.body.chatName,
-            isGroupChat: req.body.ture,
+            isGroupChat: true,
             users: req.body.users,
             groupAdmin: req.user._id,
         })
@@ -85,7 +88,7 @@ export const createGroup = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
-
+// todo
 export const deleteGroup = async (req, res) => {
     try {
         const chatId = req.params.chatId
@@ -97,7 +100,7 @@ export const deleteGroup = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
-
+// todo
 export const renameGroup = async (req, res) => {
     try {
         const { name, chatId } = req.body
@@ -118,7 +121,7 @@ export const renameGroup = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
-
+// todo
 export const removeFromGroup = async (req, res) => {
     try {
         const { userId, chatId } = req.body
@@ -140,7 +143,7 @@ export const removeFromGroup = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
-
+// todo
 export const addToGroup = async (req, res) => {
     try {
         const { userId, chatId } = req.body

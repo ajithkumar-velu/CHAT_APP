@@ -15,3 +15,14 @@ export const performGetChats = async () => {
     const res = await axiosInstance.get(ApiRoutes.GETCHAT)
     return res.data
 }
+
+export const performCreateGroup = async (data) => {
+    
+    const res = await axiosInstance.post(ApiRoutes.CREATEGROUP, data)
+    return res.data
+}
+
+export const performDeleteGroup = async (data) => {
+    const res = await axiosInstance.delete(`${ApiRoutes.DELETEGROUP}/${data}`)
+    return res.data
+}

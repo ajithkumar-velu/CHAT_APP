@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
 
     // Join user and message send to client
     const setupHandler = (userId) => {
-        
+
         if (!socket.hasJoined) {
             socket.join(userId);
             socket.hasJoined = true;
@@ -61,22 +61,50 @@ io.on('connection', (socket) => {
     };
     const newMessageHandler = (newMessageReceived) => {
         console.log(newMessageReceived);
-        
+
         let chat = newMessageReceived?.chat;
         chat?.users.forEach((user) => {
             if (user._id === newMessageReceived.sender._id) return;
             console.log("Message received by:", user._id);
             socket.in(user._id).emit("message received", newMessageReceived);
         });
-    };  
+    };
+    const joinChatHandler = (chatId) => {
+        socket.join(chatId)
+        socket.hasJoined = true;
+        console.log("chat joined:", chatId._id);
+
+    }
+
+    const typingHandle = (chat, sendUser) => {
+        console.log("typing");
+        
+        chat?.users?.forEach((user) => {
+            if (user._id === sendUser) return
+            socket.in(user._id).emit("styping", chat._id)
+        })
+    }
+    const stopTypingHandle = (chat, sendUser) => {
+        console.log("stop_typing");
+        
+        chat.users.forEach((user) => {
+            if (user._id === sendUser) return
+            socket.in(user._id).emit("sstyping", chat._id)
+        })
+    }
 
     socket.on("setup", setupHandler);
     socket.on("new message", newMessageHandler);
+    socket.on("join_chat", joinChatHandler)
+    socket.on("typing", typingHandle)
+    socket.on("stop_typing", stopTypingHandle)
 
     socket.on('disconnect', () => {
         console.log('User disconnected: ' + socket.id);
         socket.off("setup", setupHandler);
         socket.off("new message", newMessageHandler);
+        socket.off("typing", typingHandle)
+        socket.off("stop_typing", stopTypingHandle)
     });
 });
 server.listen(PORT, () => {

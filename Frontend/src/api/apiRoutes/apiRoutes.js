@@ -6,6 +6,8 @@ const ApiRoutes = {
 
     POSTCHAT: "/api/chat",
     GETCHAT: "/api/chat",
+    CREATEGROUP: "/api/chat/group",
+    DELETEGROUP: "/api/chat/deleteGroup",
     
     GETALLMESSAGES: "/api/message",
     CREATEMESSAGE: "/api/message",

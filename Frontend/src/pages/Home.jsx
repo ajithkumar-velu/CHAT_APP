@@ -3,10 +3,10 @@ import Navbar from '../components/Navbar'
 import Contact from '../components/Contact'
 import Chat from '../components/Chat'
 import { useSelector } from 'react-redux'
+import CreateGroupModal from '../components/CreateGroupModal'
 
 const Home = () => {
     const { selectedChat } = useSelector(state=>state.myChat)
-    console.log(selectedChat);
     
     
     return (
@@ -14,6 +14,7 @@ const Home = () => {
             <Navbar />
             <Contact />
             <Chat />
+            <CreateGroupModal />
         </div>
     )
 }   

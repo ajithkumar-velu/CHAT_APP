@@ -4,29 +4,46 @@ import { EllipsisVertical, LogOut, MessageSquarePlus } from 'lucide-react'
 import NewChat from './NewChat'
 import useChatMutation from '../hooks/chatHook'
 import { useDispatch, useSelector } from 'react-redux'
-import { setNewChatOpen } from '../redux/slices/conditionSlice'
+import { setIsProfileOpen, setIsTyping, setNewChatOpen } from '../redux/slices/conditionSlice'
 import { getChatImage, getChatName } from '../utils/getNameImage'
 import NewChatSkeleton from './skeleton/NewChatSkeleton'
 import useMessageMutation from '../hooks/messageHooks'
 import { addSelectedChat } from '../redux/slices/chatSlice'
 import useAuthMutations from '../hooks/authHook'
+import socket from '../config/socket'
+import GetMyChatSkeleton from './skeleton/getMyChatSkeleton'
+import Drawer from './Profile'
 
 const Contact = () => {
-  const [isType, setIsType] = useState('allChats')
+  const [chatCategory, setChatCategory] = useState('allChats')
   const { getChats } = useChatMutation()
   const { getAllMessage } = useMessageMutation()
   const isgetMyChatUsers = useSelector(state => state.condition.isgetMyChatUsers)
+  const { isgetAllUsers } = useSelector(state => state.condition)
 
   const isOpen = useSelector(state => state.condition.newChatOpen)
   const authUserId = useSelector(state => state.auth.auth.userInfo._id)
   const myChatsUsers = useSelector(state => state.myChat.chat)
   const { selectedChat } = useSelector(state => state.myChat)
-  const { logoutUser} =  useAuthMutations()
+  const { logoutUser } = useAuthMutations()
 
   const dispatch = useDispatch()
   const toggleDrawer = () => dispatch(setNewChatOpen(!isOpen));
+  const [search, setSearch] = useState("")
 
-
+  // chat category filter and search filter
+  const filterSerach =
+    myChatsUsers.filter(item => {
+      if (chatCategory === "groups") {
+        return item.isGroupChat === true
+      } else if (chatCategory === "contacts") {
+        return item.isGroupChat == false
+      } else {
+        return true
+      }
+    }
+    ) 
+      .filter((item) => getChatName(item, authUserId).toLowerCase().includes(search.toLocaleLowerCase()))
 
   useEffect(() => {
     getChats.mutateAsync()
@@ -34,15 +51,16 @@ const Contact = () => {
 
 
   const handleOnclickGetUserMessages = (id) => {
-    console.log(id._id);
 
+    socket.emit("join_chat", id)
     dispatch(addSelectedChat(id))
+    dispatch(setIsProfileOpen(false))
+    // dispatch(setIsTyping(false))
     getAllMessage.mutateAsync(id._id)
-
   }
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     logoutUser.mutateAsync()
-  } 
+  }
   return (
     <div className={`bg-base-300 md:max-w-2xs w-full py-5  flex-col gap-3 px-2 overflow-y-auto relative ${selectedChat ? "md:flex hidden" : "flex"}`} >
 
@@ -53,19 +71,19 @@ const Contact = () => {
       <div className='flex justify-between items-center px-1' >
         <label className="input h-10 rounded-full bg-base-200">
           <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></g></svg>
-          <input type="search" required placeholder="Search" />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} type="search" placeholder="Search" />
         </label>
 
         {/* Mobile screen dropdown */}
         <div className="dropdown dropdown-end md:hidden">
-        
-          <div tabIndex={0} role="button" className="m-1"><EllipsisVertical /></div>
+
+          <div tabIndex={0} role="button" className="m-1 cursor-pointer"><EllipsisVertical /></div>
           <ul tabIndex={0} className="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-sm">
             <li onClick={handleLogout} ><a>Logout</a></li>
             <li><a>Item 2</a></li>
           </ul>
         </div>
-        
+
       </div>
 
       {/* chat type */}
@@ -76,31 +94,33 @@ const Contact = () => {
             <MessageSquarePlus />
           </div>
         </h1>
+        {/* chat category */}
         <div className='flex bg-base-100 py-1 px-2 rounded-full justify-between items-center text-xs transition-all duration-300' >
-          <p onClick={() => setIsType("allChats")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${isType === "allChats" ? "bg-base-300" : ""}`} >All Chats</p>
-          <p onClick={() => setIsType("groups")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${isType === "groups" ? "bg-base-300" : ""}`} >Groups</p>
-          <p onClick={() => setIsType("contacts")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${isType === "contacts" ? "bg-base-300" : ""}`} >Contacts</p>
+          <p onClick={() => setChatCategory("allChats")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${chatCategory === "allChats" ? "bg-base-300" : ""}`} >All Chats</p>
+          <p onClick={() => setChatCategory("groups")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${chatCategory === "groups" ? "bg-base-300" : ""}`} >Groups</p>
+          <p onClick={() => setChatCategory("contacts")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${chatCategory === "contacts" ? "bg-base-300" : ""}`} >Contacts</p>
         </div>
       </div>
 
       {/* cantacts */}
       {
         isgetMyChatUsers ?
-          <NewChatSkeleton />
+          <GetMyChatSkeleton />
           :
           <div className='mt-3 flex flex-col gap-2 overflow-y-auto' >
-            {myChatsUsers.map((user, idxx) => (
+            {filterSerach.map((user, idxx) => (
 
-              <div key={idxx} onClick={() => handleOnclickGetUserMessages(user)} className='px-3 py-3 bg-base-200 rounded-xl flex items-center gap-2 hover:bg-base-100 cursor-pointer' >
+              <div key={idxx} onClick={() => handleOnclickGetUserMessages(user)} className={`px-3 py-3 rounded-xl flex items-center gap-2 hover:bg-base-100 cursor-pointer ${selectedChat?._id === user._id ? "bg-base-100" : "bg-base-200"}`} >
                 <div className='size-12 rounded-full overflow-hidden' >
                   <img src={getChatImage(user, authUserId) || images.avatar} alt="" />
                 </div>
                 <div >
                   <p className='text-[17px] text-zinc-300 font-semibold' >{getChatName(user, authUserId)}</p>
-                  {/* <p className='text-xs text-zinc-400' >{user.latestMessage || "No message"}</p> */}
+                  <p className='text-xs text-zinc-400' >{user.latestMessage?.message || "No message"}</p>
                 </div>
               </div>
             ))}
+            {filterSerach.length === 0 && <div className='text-center' >No data found</div>}
           </div>}
     </div>
   )

@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 import { useMutation } from '@tanstack/react-query'
-import { performGetAllUsers, performGetChats, performPostChat } from "../api/chat"
+import { performCreateGroup, performDeleteGroup, performGetAllUsers, performGetChats, performPostChat } from "../api/chat"
 import toast from "react-hot-toast"
 import { addMyChat, addNewChat, setAllUsers } from "../redux/slices/chatSlice"
 import { setIsGetMyChatUsers, setIsGetUsers } from "../redux/slices/conditionSlice"
@@ -26,21 +26,14 @@ const useChatMutation = () => {
     })
 
     const postChat = useMutation({
-        mutationFn: (data)=>{
-            dispathch(setIsGetMyChatUsers(true))
-            return performPostChat(data)
-        },
+        mutationFn: performPostChat,
         onSuccess: (data) => {
             toast.success("New User Added")
             dispathch(addNewChat(data))
         },
         onError: (err) => {
             toast.error(err.response?.data?.message)
-        },
-        onSettled: ()=>{
-            dispathch(setIsGetMyChatUsers(false))
-        },
-
+        }
     })
 
     const getChats = useMutation({
@@ -50,10 +43,34 @@ const useChatMutation = () => {
         },
         onError: (err) => {
             toast.error(err.response?.data?.message)
+        },
+        onSettled: ()=>{
+            dispathch(setIsGetMyChatUsers(false))
+        },
+    })
+
+    const createGroup = useMutation({
+        mutationFn: performCreateGroup,
+        onSuccess: (data) => {
+            toast.success("Group created successfully")
+            dispathch(addNewChat(data))
+        },
+        onError: (err) => {
+            toast.error(err.response?.data?.message)
         }
     })
 
-    return { getAllUsers, postChat, getChats }
+    const deleteGroup = useMutation({
+        mutationFn: performDeleteGroup,
+        onSuccess: (data) => {
+            toast.success("Group deleted successfully")
+        },
+        onError: (err) => {
+            toast.error(err.response?.data?.message)
+        }
+    })
+
+    return { getAllUsers, postChat, getChats, createGroup, deleteGroup }
 
 }
 

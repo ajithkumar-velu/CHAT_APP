@@ -14,7 +14,7 @@ export const createMessage = async (req, res) => {
         await newMessage.save()
 
         const chat = await Chat.findByIdAndUpdate(chatId,
-            {$push: {latestMessage: newMessage._id}},
+            {latestMessage: newMessage._id},
             {new: true  }
         )
         const fullMessage = await Message.findById(newMessage._id)
@@ -29,6 +29,7 @@ export const createMessage = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
+
 export const allMessage = async (req, res) => {
     try {
         const {chatId} = req.params
@@ -41,6 +42,7 @@ export const allMessage = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
+// todo
 export const clearChat = async (req, res) => {
     try {
         const {chatId} = req.body
