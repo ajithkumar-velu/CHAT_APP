@@ -11,7 +11,7 @@ import useMessageMutation from '../hooks/messageHooks'
 import { addSelectedChat } from '../redux/slices/chatSlice'
 import useAuthMutations from '../hooks/authHook'
 import socket from '../config/socket'
-import GetMyChatSkeleton from './skeleton/getMyChatSkeleton'
+import GetMyChatSkeleton from './skeleton/GetMyChatSkeleton'
 import Drawer from './Profile'
 
 const Contact = () => {
