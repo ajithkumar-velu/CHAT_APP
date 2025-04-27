@@ -9,10 +9,10 @@ const DeleteCharModal = () => {
   const { deleteGroup, getChats } = useChatMutation()
   const { selectedChat } = useSelector(state => state.myChat)
   const dispatch = useDispatch()
-  const handleDeleteGroup = ()=>{
-    deleteGroup.mutateAsync(selectedChat._id)
+  const handleDeleteGroup = async ()=>{
+    await deleteGroup.mutateAsync(selectedChat._id)
     dispatch(resetSelectedChat())
-    getChats.mutateAsync()
+    await getChats.mutateAsync()
   }
 
   return (

@@ -47,7 +47,7 @@ const CreateGroupModal = () => {
         <div className='flex flex-col items-center justify-center'>
           <input onChange={(e) => dispatch(addGroupName(e.target.value))} value={groupData.chatName} type="text" placeholder="Group Name" className="input border-0 border-b-2 bg-base-300 outline-0 focus:outline-0" />
           <input onChange={(e) => dispatch(addGroupDescription(e.target.value))} value={groupData.description} type="text" placeholder="Group Description" className="input border-0 border-b-2 bg-base-300 outline-0 focus:outline-0" />
-          <p className="py-4">Number of Users {createGroupUsersData?.users?.length}</p>
+          <p className="py-4">Number of Users {createGroupUsersData?.users?.length+1}</p>
         </div>
 
         <form method='dialog' className='flex items-center justify-center' >

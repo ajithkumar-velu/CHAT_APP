@@ -95,7 +95,7 @@ const Contact = () => {
           </div>
         </h1>
         {/* chat category */}
-        <div className='flex bg-base-100 py-1 px-2 rounded-full justify-between items-center text-xs transition-all duration-300' >
+        <div className='flex bg-base-100 py-1 px-2 rounded-full justify-between items-center text-xs transition-all duration-300 max-w-xs sm:max-w-full m-auto' >
           <p onClick={() => setChatCategory("allChats")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${chatCategory === "allChats" ? "bg-base-300" : ""}`} >All Chats</p>
           <p onClick={() => setChatCategory("groups")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${chatCategory === "groups" ? "bg-base-300" : ""}`} >Groups</p>
           <p onClick={() => setChatCategory("contacts")} className={`text-center px-4.5 py-1.5 rounded-full cursor-pointer transition-all duration-300 ${chatCategory === "contacts" ? "bg-base-300" : ""}`} >Contacts</p>
