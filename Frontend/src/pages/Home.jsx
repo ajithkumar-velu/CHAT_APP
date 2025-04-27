@@ -3,9 +3,9 @@ import Navbar from '../components/Navbar'
 import Contact from '../components/Contact'
 import Chat from '../components/Chat'
 import { useSelector } from 'react-redux'
-import CreateGroupModal from '../components/CreateGroupModal'
-import ClearCharModal from '../components/ClearCharModal'
-import DeleteCharModal from '../components/DeleteCharModal'
+import CreateGroupModal from '../components/modals/CreateGroupModal'
+import ClearCharModal from '../components/modals/ClearCharModal'
+import DeleteCharModal from '../components/modals/DeleteCharModal'
 
 const Home = () => {
     const { selectedChat } = useSelector(state=>state.myChat)

@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux'
+import GroupRenameModal from './components/modals/GroupRenameModal'
 
 const App = () => {
   const isLogin = useSelector(store => store.auth.isautenticated)
@@ -25,6 +26,7 @@ const App = () => {
         <p>features may change and you might encounter bugs.</p>
       </div> */}
       <Toaster />
+      <GroupRenameModal />
       <Routes>
         <Route path={'/'} element={isLogin ? <Home /> : <Navigate to='/login' />} />
         <Route path={'/login'} element={isLogin ? <Navigate to='/' /> : <Login />} />

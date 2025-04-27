@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { CircleMinus, Trash } from 'lucide-react';
+import { CircleMinus, Pencil, Trash } from 'lucide-react';
 import { images } from '../assets/assets';
 import useChatMutation from '../hooks/chatHook';
 import { setIsProfileOpen } from '../redux/slices/conditionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { simpleDate, SimpleDateMonthDay } from '../utils/formateDateTime';
+import { setRenameGroupName } from '../redux/slices/chatSlice';
 
 const Profile = () => {
   const { deleteGroup } = useChatMutation()
@@ -16,10 +17,11 @@ const Profile = () => {
   const profileUser = selectedChat.isGroupChat ? selectedChat :
     selectedChat.users[0]._id === authUser ? selectedChat.users[1] : selectedChat.users[0]
 
-  const handleDeleteGroup = () => {
-    deleteGroup.mutateAsync(selectedChat._id)
-  }
 
+  const handleGroupRename = ()=>{
+    document.getElementById('my_modal_4').showModal()
+    dispatch(setRenameGroupName({name: selectedChat.chatName, chatId: selectedChat._id}))
+  }
 
 
 
@@ -39,11 +41,18 @@ const Profile = () => {
             </button>
           </div>
           <div className=" bg-base-100 flex flex-col gap-1">
-            <div className='flex flex-col items-center justify-center bg-base-300 py-5' >
+            <div className='flex flex-col items-center  bg-base-300 py-5' >
               <div className='rounded-full overflow-hidden' >
                 <img className='w-64' src={selectedChat.isGroupChat ? profileUser.profile || images.groupAvatar : profileUser.profile || images.avatar} alt="" />
               </div>
-              <p className=' text-lg font-semibold mt-5' >{profileUser?.fullname || profileUser.chatName}</p>
+              {/* name */}
+              <div className=' relative text-lg font-semibold mt-5 w-full ' >
+                <p className='text-center' >{profileUser?.fullname || profileUser.chatName}</p>
+
+                {authUser._id === selectedChat.groupAdmin._id && <div onClick={handleGroupRename} title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
+                  <Pencil className='size-5' />
+                </div>}
+              </div>
               <p className=' text-zinc-400' >{profileUser.email ? profileUser.email : `Group • ${profileUser?.users?.length} members`}</p>
             </div>
             <div className='bg-base-300 py-5 px-5'>
@@ -77,7 +86,7 @@ const Profile = () => {
                 <p>Clear chat</p>
               </div>
               {selectedChat.isGroupChat && authUser._id === selectedChat.groupAdmin._id &&
-                <div onClick={()=>document.getElementById('my_modal_3').showModal()} className='flex items-center gap-3 py-4 hover:bg-base-200 p-4 rounded-xl cursor-pointer' >
+                <div onClick={() => document.getElementById('my_modal_3').showModal()} className='flex items-center gap-3 py-4 hover:bg-base-200 p-4 rounded-xl cursor-pointer' >
                   <p><Trash /> </p>
                   <p>Delete Group</p>
                 </div>}

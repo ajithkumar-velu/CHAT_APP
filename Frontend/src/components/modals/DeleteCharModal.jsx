@@ -1,25 +1,28 @@
 import { Check, X } from 'lucide-react'
 import React from 'react'
-import useChatMutation from '../hooks/chatHook'
-import { useSelector } from 'react-redux'
+import useChatMutation from '../../hooks/chatHook'
+import { useDispatch, useSelector } from 'react-redux'
+import { resetSelectedChat } from '../../redux/slices/chatSlice'
 
-const ClearCharModal = () => {
+const DeleteCharModal = () => {
 
-  const { deleteGroup } = useChatMutation()
+  const { deleteGroup, getChats } = useChatMutation()
   const { selectedChat } = useSelector(state => state.myChat)
-  const handleDeleteGroup = ()=>{
-    deleteGroup.mutateAsync(selectedChat._id)
+  const dispatch = useDispatch()
+  const handleDeleteGroup = async ()=>{
+    await deleteGroup.mutateAsync(selectedChat._id)
+    dispatch(resetSelectedChat())
+    await getChats.mutateAsync()
   }
 
   return (
-    <dialog id="my_modal_2" className="modal">
+    <dialog id="my_modal_3" className="modal">
       <div className="modal-box bg-base-300">
         <div className='flex items-center justify-between' >
 
-          <h3 className="font-bold text-2xl">Clear This chat?</h3>
+          <h3 className="font-bold text-xl">Delete This Group?</h3>
 
           <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
             <button className="btn bg-base-300 border-0 hover:text-red-600"><X /></button>
           </form>
 
@@ -27,7 +30,7 @@ const ClearCharModal = () => {
 
         <div className='flex gap-2 justify-center bg-base-300 py-5' >
           <p>⚠️</p>
-          <p>This action will permanently delete the entire chat history for all participants. This cannot be undone.</p>
+          <p> <strong>This cannot be undone.</strong> All messages and members will be removed.</p>
         </div>
 
 
@@ -35,7 +38,7 @@ const ClearCharModal = () => {
           <div></div>
           <div className='flex gap-1' >
             <button className="rounded-full py-2 px-7 w-fit mt-2 cursor-pointer hover:text-white" >Cancel</button>
-            <button onClick={handleDeleteGroup} className="rounded-full py-2 px-7 w-fit mt-2 bg-red-700 text-black cursor-pointer hover:bg-red-700/90" >Clear chat</button>
+            <button onClick={handleDeleteGroup} className="rounded-full py-2 px-7 w-fit mt-2 bg-red-700 text-black cursor-pointer hover:bg-red-700/90" >Delete Group</button>
           </div>
         </form>
       </div>
@@ -43,4 +46,4 @@ const ClearCharModal = () => {
   )
 }
 
-export default ClearCharModal
+export default DeleteCharModal

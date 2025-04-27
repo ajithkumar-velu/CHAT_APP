@@ -33,7 +33,7 @@ const Contact = () => {
 
   // chat category filter and search filter
   const filterSerach =
-    myChatsUsers.filter(item => {
+    myChatsUsers?.filter(item => {
       if (chatCategory === "groups") {
         return item.isGroupChat === true
       } else if (chatCategory === "contacts") {

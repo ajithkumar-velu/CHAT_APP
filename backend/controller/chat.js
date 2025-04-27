@@ -89,7 +89,6 @@ export const createGroup = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
-// todo
 export const deleteGroup = async (req, res) => {
     try {
         const chatId = req.params.chatId
@@ -101,7 +100,6 @@ export const deleteGroup = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
-// todo
 export const renameGroup = async (req, res) => {
     try {
         const { name, chatId } = req.body

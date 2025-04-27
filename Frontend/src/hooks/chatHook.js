@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux"
 import { useMutation } from '@tanstack/react-query'
-import { performCreateGroup, performDeleteGroup, performGetAllUsers, performGetChats, performPostChat } from "../api/chat"
+import { performCreateGroup, performDeleteGroup, performGetAllUsers, performGetChats, performPostChat, performRenameGroup } from "../api/chat"
 import toast from "react-hot-toast"
-import { addMyChat, addNewChat, setAllUsers } from "../redux/slices/chatSlice"
+import { addMyChat, addNewChat, addSelectedChat, setAllUsers } from "../redux/slices/chatSlice"
 import { setIsGetMyChatUsers, setIsGetUsers } from "../redux/slices/conditionSlice"
 
 const useChatMutation = () => {
@@ -38,6 +38,9 @@ const useChatMutation = () => {
 
     const getChats = useMutation({
         mutationFn: performGetChats,
+        onMutate: ()=>{
+            dispathch(setIsGetMyChatUsers(true))
+        },
         onSuccess: (data) => {
             dispathch(addMyChat(data))
         },
@@ -70,7 +73,18 @@ const useChatMutation = () => {
         }
     })
 
-    return { getAllUsers, postChat, getChats, createGroup, deleteGroup }
+    const renameGroup = useMutation({
+        mutationFn: performRenameGroup,
+        onSuccess: (data) => {
+            dispathch(addSelectedChat(data))
+            toast.success("Group Renamed successfully")
+        },
+        onError: (err) => {
+            toast.error(err.response?.data?.message)
+        }
+    })
+
+    return { getAllUsers, postChat, getChats, createGroup, deleteGroup, renameGroup }
 
 }
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { images } from '../assets/assets'
+import { images } from '../../assets/assets'
 import { Check, X } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import useChatMutation from '../hooks/chatHook'
-import { addGroupDescription, addGroupName, resetGroupData } from '../redux/slices/chatSlice'
-import { setIsGroup, setNewChatOpen } from '../redux/slices/conditionSlice'
+import useChatMutation from '../../hooks/chatHook'
+import { addGroupDescription, addGroupName, resetGroupData } from '../../redux/slices/chatSlice'
+import { setIsGroup, setNewChatOpen } from '../../redux/slices/conditionSlice'
 
 const CreateGroupModal = () => {
   const dispatch = useDispatch()
@@ -30,7 +30,7 @@ const CreateGroupModal = () => {
       <div className="modal-box bg-base-300">
         <div className='flex items-center justify-between' >
 
-          <h3 className="font-bold text-2xl">New Group</h3>
+          <h3 className="font-bold text-xl">New Group</h3>
 
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
