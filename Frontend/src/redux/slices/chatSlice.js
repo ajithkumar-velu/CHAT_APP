@@ -15,6 +15,7 @@ const initialState = {
         name:"",
         chatId: ""
     },
+    removeFromGroupUser: "",
 }
 
 const chatSlice = createSlice({
@@ -76,10 +77,13 @@ const chatSlice = createSlice({
         },
         addGroupRename: (state, action)=>{
             state.groupRenameData.name = action.payload
+        },
+        addRemoveFromGroupUser: (state, action)=>{
+            state.removeFromGroupUser =  action.payload
         }
 
     }
 })
 
-export const { addMyChat, setAllUsers, addNewChat, addSelectedChat, addGroupName, addUsersToGroup, removeUserFromGroup, resetGroupData, resetSelectedChat, addGroupDescription, setRenameGroupName, addGroupRename } = chatSlice.actions
+export const { addMyChat, setAllUsers, addNewChat, addSelectedChat, addGroupName, addUsersToGroup, removeUserFromGroup, resetGroupData, resetSelectedChat, addGroupDescription, setRenameGroupName, addGroupRename, addRemoveFromGroupUser } = chatSlice.actions
 export default chatSlice.reducer

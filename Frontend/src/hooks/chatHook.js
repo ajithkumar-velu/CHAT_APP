@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 import { useMutation } from '@tanstack/react-query'
-import { performCreateGroup, performDeleteGroup, performGetAllUsers, performGetChats, performPostChat, performRenameGroup } from "../api/chat"
+import { performCreateGroup, performDeleteGroup, performGetAllUsers, performGetChats, performPostChat, performRemoveFromGroup, performRenameGroup } from "../api/chat"
 import toast from "react-hot-toast"
 import { addMyChat, addNewChat, addSelectedChat, setAllUsers } from "../redux/slices/chatSlice"
 import { setIsGetMyChatUsers, setIsGetUsers } from "../redux/slices/conditionSlice"
@@ -55,7 +55,7 @@ const useChatMutation = () => {
     const createGroup = useMutation({
         mutationFn: performCreateGroup,
         onSuccess: (data) => {
-            toast.success("Group created successfully")
+            toast.success("Group Created Successfully")
             dispathch(addNewChat(data))
         },
         onError: (err) => {
@@ -66,7 +66,7 @@ const useChatMutation = () => {
     const deleteGroup = useMutation({
         mutationFn: performDeleteGroup,
         onSuccess: (data) => {
-            toast.success("Group deleted successfully")
+            toast.success("Group deleted Successfully")
         },
         onError: (err) => {
             toast.error(err.response?.data?.message)
@@ -77,14 +77,25 @@ const useChatMutation = () => {
         mutationFn: performRenameGroup,
         onSuccess: (data) => {
             dispathch(addSelectedChat(data))
-            toast.success("Group Renamed successfully")
+            toast.success("Group Renamed Successfully")
         },
         onError: (err) => {
             toast.error(err.response?.data?.message)
         }
     })
 
-    return { getAllUsers, postChat, getChats, createGroup, deleteGroup, renameGroup }
+    const removeFromGroup = useMutation({
+        mutationFn: performRemoveFromGroup,
+        onSuccess: (data) => {
+            dispathch(addSelectedChat(data))
+            toast.success("User Removed Successfully")
+        },
+        onError: (err) => {
+            toast.error(err.response?.data?.message)
+        }
+    })
+
+    return { getAllUsers, postChat, getChats, createGroup, deleteGroup, renameGroup, removeFromGroup }
 
 }
 

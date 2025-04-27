@@ -30,3 +30,9 @@ export const performRenameGroup = async (data) => {
     const res = await axiosInstance.post(ApiRoutes.RENAMEGROUP, data)
     return res.data
 }
+
+export const performRemoveFromGroup = async (data) => {    
+    const res = await axiosInstance.post(ApiRoutes.REMOVEFROMGROUP, data)
+    return res.data
+}
+

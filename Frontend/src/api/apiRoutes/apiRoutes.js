@@ -9,6 +9,7 @@ const ApiRoutes = {
     CREATEGROUP: "/api/chat/group",
     RENAMEGROUP: "/api/chat/rename",
     DELETEGROUP: "/api/chat/deleteGroup",
+    REMOVEFROMGROUP: "/api/chat/groupRemove",
     
     GETALLMESSAGES: "/api/message",
     CREATEMESSAGE: "/api/message",

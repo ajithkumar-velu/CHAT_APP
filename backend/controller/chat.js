@@ -124,7 +124,7 @@ export const renameGroup = async (req, res) => {
 export const removeFromGroup = async (req, res) => {
     try {
         const { userId, chatId } = req.body
-        if (!userId || chatId) return res.status(400).json({ message: "userId and chatId are required" })
+        if (!userId || !chatId) return res.status(400).json({ message: "userId and chatId are required" })
 
         const chat = await Chat.findByIdAndUpdate(chatId, {
             $pull: { users: userId }

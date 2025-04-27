@@ -4,7 +4,7 @@ import Message from "../models/MessageModel.js";
 export const createMessage = async (req, res) => {
     try {
         const { message, chatId } = req.body
-        if(!message || !chatId) return req.status(400).json({ message: "Message and chatId are required"})
+        if(!message || !chatId) return res.status(400).json({ message: "Message and chatId are required"})
         
         const newMessage = new Message({
             sender: req.user._id,

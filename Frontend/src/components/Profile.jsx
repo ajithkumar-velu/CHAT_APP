@@ -5,7 +5,7 @@ import useChatMutation from '../hooks/chatHook';
 import { setIsProfileOpen } from '../redux/slices/conditionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { simpleDate, SimpleDateMonthDay } from '../utils/formateDateTime';
-import { setRenameGroupName } from '../redux/slices/chatSlice';
+import { addRemoveFromGroupUser, setRenameGroupName } from '../redux/slices/chatSlice';
 
 const Profile = () => {
   const { deleteGroup } = useChatMutation()
@@ -22,7 +22,10 @@ const Profile = () => {
     document.getElementById('my_modal_4').showModal()
     dispatch(setRenameGroupName({name: selectedChat.chatName, chatId: selectedChat._id}))
   }
-
+  const handleRemoveFromGroup = (data)=>{
+    dispatch(addRemoveFromGroupUser(data))
+    document.getElementById('removeFromGroup').showModal()
+  }
 
 
 
@@ -65,9 +68,10 @@ const Profile = () => {
                 <p className='text-lg font-semibold mb-2' >Users</p>
                 {
                   profileUser.users.slice().sort((a, b) => a.fullname.localeCompare(b.fullname)).map((user, idx) => (
-                    <div key={idx} className='flex items-center justify-between text-zinc-400 gap-1' >
+                    <div key={idx} className='flex items-center justify-between text-zinc-400 gap-1 hover:bg-base-100 px-4 py-1 cursor-pointer group' >
                       <p className={` `} >{authUser._id === user._id ? "You" : user.fullname}</p>
                       <p className={` `} >{selectedChat.groupAdmin._id === user._id ? "(Admin)" : ""}</p>
+                      {authUser._id === selectedChat.groupAdmin._id && selectedChat.groupAdmin._id !== user._id && <div onClick={()=>handleRemoveFromGroup(user)} className=' hidden items-center gap-2 text-red-800 group-hover:flex' ><CircleMinus className='size-5' /> Remove</div>}
                     </div>
                   ))
                 }

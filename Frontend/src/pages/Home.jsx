@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import CreateGroupModal from '../components/modals/CreateGroupModal'
 import ClearCharModal from '../components/modals/ClearCharModal'
 import DeleteCharModal from '../components/modals/DeleteCharModal'
+import RemoveFromGroup from '../components/modals/RemoveFromGroup'
 
 const Home = () => {
     const { selectedChat } = useSelector(state=>state.myChat)
@@ -19,6 +20,7 @@ const Home = () => {
             <CreateGroupModal />
             <ClearCharModal />
             <DeleteCharModal />
+            <RemoveFromGroup />
         </div>
     )
 }   
