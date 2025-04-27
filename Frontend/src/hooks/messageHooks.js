@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useMutation } from '@tanstack/react-query'
-import { performCreateMessage, performGetAllMessages } from "../api/message"
+import { performClearChat, performCreateMessage, performGetAllMessages } from "../api/message"
 import { addAllMessages, addNewMessage, addNewMessageId } from "../redux/slices/messageSlice"
 import toast from "react-hot-toast"
 import socket from "../config/socket"
@@ -40,7 +40,24 @@ const useMessageMutation = () => {
             toast.error(err.response?.data?.message)
         }
     })
-    return { getAllMessage, createMessage}
+
+    const clearMessage = useMutation({
+        mutationFn: performClearChat,
+        onMutate: ()=>{
+            dispatch(setIsChatLow(true))
+        },
+        onSuccess: (data)=>{
+            dispatch(addAllMessages([]))
+            toast.success(data.message)
+        },
+        onError: (err)=>{
+            toast.error(err.response?.data?.message)
+        },
+        onSettled: ()=>{
+            dispatch(setIsChatLow(false))
+        }
+    })
+    return { getAllMessage, createMessage, clearMessage}
 }
 
 export default useMessageMutation

@@ -6,18 +6,20 @@ import { setIsProfileOpen } from '../redux/slices/conditionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { simpleDate, SimpleDateMonthDay } from '../utils/formateDateTime';
 import { addRemoveFromGroupUser, setAddNewUserToGroup, setRenameGroupName } from '../redux/slices/chatSlice';
+import useMessageMutation from '../hooks/messageHooks';
 
 const Profile = () => {
   const { deleteGroup } = useChatMutation()
+  const {clearMessage}  = useMessageMutation()
   const dispatch = useDispatch()
   const isOpen = useSelector(state => state.condition.isProfileOpen)
   const closeDrawer = () => dispatch(setIsProfileOpen(false));
   const authUser = useSelector(state => state.auth.auth.userInfo)
   const { selectedChat, addNewUserToGroup } = useSelector(state => state.myChat)
   const profileUser = selectedChat.isGroupChat ? selectedChat :
-    selectedChat.users[0]._id === authUser ? selectedChat.users[1] : selectedChat.users[0]
+    selectedChat.users[0]._id === authUser._id ? selectedChat.users[1] : selectedChat.users[0]
 
-console.log(addNewUserToGroup);
+
 
   const handleGroupRename = () => {
     document.getElementById('my_modal_4').showModal()
@@ -51,7 +53,7 @@ console.log(addNewUserToGroup);
               </div>
               {/* chat name */}
               <div className=' relative text-lg font-semibold mt-5 w-full ' >
-                <p className='text-center' >{profileUser?.fullname || profileUser.chatName}</p>
+                <p className='text-center' >{profileUser?.fullname || profileUser?.chatName}</p>
 
                 {selectedChat.isGroupChat && authUser._id === selectedChat.groupAdmin._id && <div onClick={handleGroupRename} title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
                   <Pencil className='size-5' />
@@ -99,7 +101,7 @@ console.log(addNewUserToGroup);
             </div>
 
             <div className='w-full flex flex-col gap-1 bg-base-300 p-2 text-red-700' >
-              <div className='flex items-center gap-3 py-4 hover:bg-base-200 p-4 rounded-xl cursor-pointer' >
+              <div onClick={()=>clearMessage.mutateAsync(selectedChat._id)} className='flex items-center gap-3 py-4 hover:bg-base-200 p-4 rounded-xl cursor-pointer' >
                 <p><CircleMinus /> </p>
                 <p>Clear chat</p>
               </div>

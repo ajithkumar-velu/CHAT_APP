@@ -14,5 +14,6 @@ const ApiRoutes = {
     
     GETALLMESSAGES: "/api/message",
     CREATEMESSAGE: "/api/message",
+    CLEARMESSAGE: "/api/message/clearChat",
 }
 export default ApiRoutes

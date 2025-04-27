@@ -10,3 +10,8 @@ export const performCreateMessage = async(data)=>{
     const res = await axiosInstance.post(ApiRoutes.GETALLMESSAGES, data)
     return res.data
 }
+
+export const performClearChat = async(data)=>{
+    const res = await axiosInstance.get(`${ApiRoutes.CLEARMESSAGE}/${data}`)
+    return res.data
+}

@@ -4,7 +4,7 @@ import { EllipsisVertical, LogOut, MessageSquarePlus } from 'lucide-react'
 import NewChat from './NewChat'
 import useChatMutation from '../hooks/chatHook'
 import { useDispatch, useSelector } from 'react-redux'
-import { setIsProfileOpen, setIsTyping, setNewChatOpen } from '../redux/slices/conditionSlice'
+import { setIsChatThreeDotOpen, setIsProfileOpen, setIsTyping, setNewChatOpen } from '../redux/slices/conditionSlice'
 import { getChatImage, getChatName } from '../utils/getNameImage'
 import NewChatSkeleton from './skeleton/NewChatSkeleton'
 import useMessageMutation from '../hooks/messageHooks'
@@ -54,6 +54,7 @@ const Contact = () => {
 
     socket.emit("join_chat", id)
     dispatch(addSelectedChat(id))
+    dispatch(setIsChatThreeDotOpen(false))
     dispatch(setIsProfileOpen(false))
     // dispatch(setIsTyping(false))
     getAllMessage.mutateAsync(id._id)

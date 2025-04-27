@@ -45,7 +45,7 @@ export const allMessage = async (req, res) => {
 // todo
 export const clearChat = async (req, res) => {
     try {
-        const {chatId} = req.body
+        const {chatId} = req.params
         await Message.deleteMany({ chat: chatId})
         return res.status(200).json({ message: "Messages cleared"})
     } catch (error) {

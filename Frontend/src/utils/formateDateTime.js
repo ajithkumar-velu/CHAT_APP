@@ -46,7 +46,7 @@ export const groupMessagesByDate = (messages) => {
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
   
-    messages.forEach((message) => {
+    messages?.forEach((message) => {
       const messageDate = new Date(message.createdAt);
   
       let dateLabel;

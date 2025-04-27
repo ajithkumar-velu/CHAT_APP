@@ -141,7 +141,6 @@ export const removeFromGroup = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
-// todo
 export const addToGroup = async (req, res) => {
     try {
         const { userIds, chatId } = req.body

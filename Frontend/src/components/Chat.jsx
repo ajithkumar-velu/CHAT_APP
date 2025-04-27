@@ -16,7 +16,7 @@ const Chat = () => {
   const bottomRef = useRef(null);
   const [message, setMessage] = useState("")
   const { selectedChat } = useSelector(state => state.myChat)
-  const { createMessage } = useMessageMutation()
+  const { createMessage, clearMessage } = useMessageMutation()
   const authUserId = useSelector(state => state.auth.auth.userInfo._id)
   let messages = useSelector(state => state.messages.messages)
   messages = groupMessagesByDate(messages)
@@ -130,7 +130,7 @@ const Chat = () => {
               <p><Info /></p>
               <p>{selectedChat.isGroupChat ? "Group Info" : "Contact Info"}</p>
             </a></li>
-            <li>
+            <li onClick={() => clearMessage.mutateAsync(selectedChat._id)} >
               <a onClick={() => dispatch(setIsChatThreeDotOpen(false))} className='flex items-center gap-3' >
                 <p><CircleMinus /> </p>
                 <p>Clear chat</p>
