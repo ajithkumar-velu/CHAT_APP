@@ -11,8 +11,6 @@ const GroupRenameModal = () => {
     const handleGroupRename = ()=>{
         renameGroup.mutateAsync(groupRenameData)
     }
-    console.log(groupRenameData);
-    
     return (
         <dialog id="my_modal_4" className="modal">
             <div className="modal-box bg-base-300">

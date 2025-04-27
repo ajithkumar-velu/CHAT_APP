@@ -16,6 +16,8 @@ const initialState = {
         chatId: ""
     },
     removeFromGroupUser: "",
+    addNewUserToGroup: [],
+    copyAddNewUserToGroup: [],
 }
 
 const chatSlice = createSlice({
@@ -80,10 +82,38 @@ const chatSlice = createSlice({
         },
         addRemoveFromGroupUser: (state, action)=>{
             state.removeFromGroupUser =  action.payload
-        }
+        },
+        setAddNewUserToGroup: (state, action)=>{
+            state.addNewUserToGroup = action.payload
+            state.copyAddNewUserToGroup = action.payload
+        },
+        removeAddNewUserToGroup: (state, action) => {
+            const userIdToRemove = action.payload;
+            state.addNewUserToGroup = state.addNewUserToGroup.filter(
+                user => user._id !== userIdToRemove
+            );
+        },
 
+        addAddNewUserToGroup: (state, action) => {
+            const newUsers = Array.isArray(action.payload)
+                ? action.payload
+                : [action.payload];
+
+            newUsers.forEach(newUser => {
+                const exists = state.addNewUserToGroup.some(
+                    user => user._id === newUser._id
+                );
+                if (!exists) {
+                    state.addNewUserToGroup.push(newUser);
+                }
+            });
+        },
+        resetAddNewUserToGroup: (state) => {
+            state.addNewUserToGroup = []
+            state.copyAddNewUserToGroup = []
+        },
     }
 })
 
-export const { addMyChat, setAllUsers, addNewChat, addSelectedChat, addGroupName, addUsersToGroup, removeUserFromGroup, resetGroupData, resetSelectedChat, addGroupDescription, setRenameGroupName, addGroupRename, addRemoveFromGroupUser } = chatSlice.actions
+export const { addMyChat, setAllUsers, addNewChat, addSelectedChat, addGroupName, addUsersToGroup, removeUserFromGroup, resetGroupData, resetSelectedChat, addGroupDescription, setRenameGroupName, addGroupRename, addRemoveFromGroupUser, setAddNewUserToGroup, removeAddNewUserToGroup, addAddNewUserToGroup, resetAddNewUserToGroup } = chatSlice.actions
 export default chatSlice.reducer

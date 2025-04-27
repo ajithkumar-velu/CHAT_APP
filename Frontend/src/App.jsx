@@ -20,18 +20,17 @@ const App = () => {
   }
   
   return (
-    <div className='h-screen bg-zinc-800 flex items-center justify-center' >
-      {/* <div className='text-wrap z-6 py-1 text-gray-200 fixed bg-yellow-600 px-5 top-1' >
+      <div className='h-screen bg-zinc-800 flex  items-center justify-center' >
+      <div className='text-wrap text-[10px] z-6 py-1 text-gray-200 fixed bg-yellow-600 px-5 top-1' >
         <p><span className='text-black font-bold' >Note:</span> This chat app is currently in development.</p>
         <p>features may change and you might encounter bugs.</p>
-      </div> */}
+      </div>
       <Toaster />
       <GroupRenameModal />
       <Routes>
         <Route path={'/'} element={isLogin ? <Home /> : <Navigate to='/login' />} />
         <Route path={'/login'} element={isLogin ? <Navigate to='/' /> : <Login />} />
         <Route path={'/signup'} element={isLogin ? <Navigate to='/' /> : <Signup />} />
-        {/* <Route path={'*'} element={isLogin? <Navigate to='/'/> : <Signup />} /> */}
       </Routes>
     </div>
   )

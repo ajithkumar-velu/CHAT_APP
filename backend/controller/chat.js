@@ -30,7 +30,7 @@ export const postChat = async (req, res) => {
             })
             await newChat.save()
             const chat = await Chat.findOne({ _id: newChat._id }).populate("users", "-password")
-            return res.status(201).json(chat )
+            return res.status(201).json(chat)
         } else {
             const chat = existingChat[0]
             return res.status(200).json(chat)
@@ -54,13 +54,13 @@ export const getChat = async (req, res) => {
                     select: "-password"
                 }
             }).populate("groupAdmin", "-password")
-        
+
         res.status(200).json(chat)
     } catch (error) {
         console.log("Error in getChat", error);
         res.status(500).json({ message: "Internal server Error" })
     }
-}   
+}
 
 export const createGroup = async (req, res) => {
     try {
@@ -120,7 +120,6 @@ export const renameGroup = async (req, res) => {
         res.status(500).json({ message: "Internal server Error" })
     }
 }
-// todo
 export const removeFromGroup = async (req, res) => {
     try {
         const { userId, chatId } = req.body
@@ -145,18 +144,22 @@ export const removeFromGroup = async (req, res) => {
 // todo
 export const addToGroup = async (req, res) => {
     try {
-        const { userId, chatId } = req.body
-        if (!userId || chatId) return res.status(400).json({ message: "userId and chatId are required" })
-            
-        const chat = await Chat.findByIdAndUpdate(chatId,
-            {$push: {users: userId}},
-            {new: true}
-        ).populate("users", "-password")
-        .populate("groupAdmin", "-password")
+        const { userIds, chatId } = req.body
+        if (!userIds || !chatId) return res.status(400).json({ message: "userId and chatId are required" })
 
-        if(!chat) return res.status(400).json({ message: "Chat not found"})
+        const chat = await Chat.findByIdAndUpdate(chatId,
+            {
+                $addToSet: {
+                    users: { $each: userIds }
+                }
+            },
+            { new: true }
+        ).populate("users", "-password")
+            .populate("groupAdmin", "-password")
+
+        if (!chat) return res.status(400).json({ message: "Chat not found" })
         res.status(200).json(chat)
-        
+
     } catch (error) {
         console.log("Error in addToGroup", error);
         res.status(500).json({ message: "Internal server Error" })

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { CircleMinus, Pencil, Trash } from 'lucide-react';
+import { CircleMinus, Pencil, Trash, UserRoundPlus } from 'lucide-react';
 import { images } from '../assets/assets';
 import useChatMutation from '../hooks/chatHook';
 import { setIsProfileOpen } from '../redux/slices/conditionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { simpleDate, SimpleDateMonthDay } from '../utils/formateDateTime';
-import { addRemoveFromGroupUser, setRenameGroupName } from '../redux/slices/chatSlice';
+import { addRemoveFromGroupUser, setAddNewUserToGroup, setRenameGroupName } from '../redux/slices/chatSlice';
 
 const Profile = () => {
   const { deleteGroup } = useChatMutation()
@@ -13,16 +13,17 @@ const Profile = () => {
   const isOpen = useSelector(state => state.condition.isProfileOpen)
   const closeDrawer = () => dispatch(setIsProfileOpen(false));
   const authUser = useSelector(state => state.auth.auth.userInfo)
-  const { selectedChat } = useSelector(state => state.myChat)
+  const { selectedChat, addNewUserToGroup } = useSelector(state => state.myChat)
   const profileUser = selectedChat.isGroupChat ? selectedChat :
     selectedChat.users[0]._id === authUser ? selectedChat.users[1] : selectedChat.users[0]
 
+console.log(addNewUserToGroup);
 
-  const handleGroupRename = ()=>{
+  const handleGroupRename = () => {
     document.getElementById('my_modal_4').showModal()
-    dispatch(setRenameGroupName({name: selectedChat.chatName, chatId: selectedChat._id}))
+    dispatch(setRenameGroupName({ name: selectedChat.chatName, chatId: selectedChat._id }))
   }
-  const handleRemoveFromGroup = (data)=>{
+  const handleRemoveFromGroup = (data) => {
     dispatch(addRemoveFromGroupUser(data))
     document.getElementById('removeFromGroup').showModal()
   }
@@ -48,11 +49,11 @@ const Profile = () => {
               <div className='rounded-full overflow-hidden' >
                 <img className='w-64' src={selectedChat.isGroupChat ? profileUser.profile || images.groupAvatar : profileUser.profile || images.avatar} alt="" />
               </div>
-              {/* name */}
+              {/* chat name */}
               <div className=' relative text-lg font-semibold mt-5 w-full ' >
                 <p className='text-center' >{profileUser?.fullname || profileUser.chatName}</p>
 
-                {authUser._id === selectedChat.groupAdmin._id && <div onClick={handleGroupRename} title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
+                {selectedChat.isGroupChat && authUser._id === selectedChat.groupAdmin._id && <div onClick={handleGroupRename} title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
                   <Pencil className='size-5' />
                 </div>}
               </div>
@@ -66,12 +67,25 @@ const Profile = () => {
             {selectedChat.isGroupChat &&
               <div className='bg-base-300 py-5 px-5'>
                 <p className='text-lg font-semibold mb-2' >Users</p>
+                {/* add user */}
+
+                { selectedChat?.isGroupChat && authUser._id === selectedChat.groupAdmin._id && <div onClick={()=>{dispatch(setAddNewUserToGroup(selectedChat.users));document.getElementById('addNewUserToGroup').showModal()}} className='flex items-center gap-2 px-4 py-1 hover:bg-base-100 mb-1 cursor-pointer' >
+                  <div  className='size-12 rounded-full overflow-hidden bg-zinc-700  flex items-center justify-center' >
+                    <UserRoundPlus />
+                  </div>
+                  <p className={` `} >Add member</p>
+                </div>}
                 {
                   profileUser.users.slice().sort((a, b) => a.fullname.localeCompare(b.fullname)).map((user, idx) => (
-                    <div key={idx} className='flex items-center justify-between text-zinc-400 gap-1 hover:bg-base-100 px-4 py-1 cursor-pointer group' >
-                      <p className={` `} >{authUser._id === user._id ? "You" : user.fullname}</p>
+                    <div key={idx} className='flex items-center justify-between text-zinc-400 gap-1 hover:bg-base-100 px-4 py-1 cursor-pointer group mb-1' >
+                      <div className='flex items-center gap-2' >
+                        <div className='size-11 rounded-full overflow-hidden' >
+                          <img src={user.profile || images.avatar} alt="User Profile" />
+                        </div>
+                        <p className={` `} >{authUser._id === user._id ? "You" : user.fullname}</p>
+                      </div>
                       <p className={` `} >{selectedChat.groupAdmin._id === user._id ? "(Admin)" : ""}</p>
-                      {authUser._id === selectedChat.groupAdmin._id && selectedChat.groupAdmin._id !== user._id && <div onClick={()=>handleRemoveFromGroup(user)} className=' hidden items-center gap-2 text-red-800 group-hover:flex' ><CircleMinus className='size-5' /> Remove</div>}
+                      {authUser._id === selectedChat.groupAdmin._id && selectedChat.groupAdmin._id !== user._id && <div onClick={() => handleRemoveFromGroup(user)} className=' hidden items-center gap-2 text-red-800 group-hover:flex' ><CircleMinus className='size-5' /> Remove</div>}
                     </div>
                   ))
                 }

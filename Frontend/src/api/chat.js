@@ -36,3 +36,9 @@ export const performRemoveFromGroup = async (data) => {
     return res.data
 }
 
+
+export const performAddUserToGroup = async (data) => {    
+    const res = await axiosInstance.post(ApiRoutes.ADDTOGROUP, data)
+    return res.data
+}
+
