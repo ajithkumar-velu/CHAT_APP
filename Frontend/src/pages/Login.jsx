@@ -24,7 +24,7 @@ const Login = () => {
     return (
         <div className='md:w-[70%] md:h-[90%] w-full h-full bg-base-100 flex gap-2' >
             <div className='flex items-center justify-center w-full' >
-                <fieldset className="fieldset w-md bg-base-200 border border-base-300 p-4 rounded-box mx-5 md:mx-0">
+                <fieldset className="fieldset w-md bg-base-300 border border-base-300 p-4 rounded-box mx-5 md:mx-0">
                     <legend className="fieldset-legend text-lg">Login</legend>
 
                     <label className="fieldset-label text-[16px]">Email</label>

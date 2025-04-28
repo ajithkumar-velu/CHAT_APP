@@ -73,7 +73,7 @@ const NewChat = () => {
         </div>
 
         {/* Group button */}
-        <div onClick={() => dispatch(setIsGroup(!isGroup))} className={` flex items-center gap-2 px-3 cursor-pointer hover:bg-base-100 rounded-xl m-2 mt-3 py-2 ${isGroup ? "bg-base-100" : "bg-base-200"}`} >
+        <div onClick={() => dispatch(setIsGroup(!isGroup))} className={` flex items-center gap-2 px-3 cursor-pointer hover:bg-base-100 rounded-xl m-2 mt-3 py-2 ${isGroup ? "bg-secondary" : "bg-base-200"}`} >
           <div className='size-11' >
             <img src={images.groupAvatar} alt="" />
           </div>
@@ -93,7 +93,7 @@ const NewChat = () => {
 
           <div className='flex items-center gap-2 flex-wrap  py-3 mx-2' >
             {groupData.users.map((user, idx) => (
-              <div key={idx} className='flex items-center gap-1 bg-base-200 px-3 py-1 rounded-full'>
+              <div key={idx} className='flex items-center gap-1 bg-base-100 px-3 py-1 rounded-full'>
                 <p className=' whitespace-nowrap' >{user.fullname} </p>
                 <X onClick={() => removeSelectedGroupUser(user._id)} className=' size-4 cursor-pointer hover:text-red-700' />
               </div>
@@ -101,7 +101,7 @@ const NewChat = () => {
           </div>
           {groupData.users.length > 1 &&
             <div className='flex items-center justify-center' >
-              <button className="btn rounded-full size-12 mt-2 bg-gray-700" onClick={handleGroupSelectedUserToSetRedux}><MoveRight className=' size-8' /></button>
+              <button className="btn rounded-full size-12 mt-2 bg-secondary hover:bg-secondary/90" onClick={handleGroupSelectedUserToSetRedux}><MoveRight className=' size-8' /></button>
             </div>
           }
         </div>
@@ -118,8 +118,8 @@ const NewChat = () => {
                   <img src={user.profile || images.avatar} alt="" />
                 </div>
                 <div >
-                  <p className='text-[17px] text-zinc-300 font-semibold' >{user.fullname}</p>
-                  <p className='text-xs text-zinc-400' >{user.about}</p>
+                  <p className='text-[17px] text-base-content/90 font-semibold' >{user.fullname}</p>
+                  <p className='text-xs text-base-content/80' >{user.about}</p>
                 </div>
               </div>
             ))}

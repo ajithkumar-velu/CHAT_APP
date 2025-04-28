@@ -8,13 +8,14 @@ import ClearCharModal from '../components/modals/ClearCharModal'
 import DeleteCharModal from '../components/modals/DeleteCharModal'
 import RemoveFromGroup from '../components/modals/RemoveFromGroup'
 import AddNewUserToGroup from '../components/modals/AddNewUserToGroup'
+import ClearChatModal from '../components/modals/ClearChatModal'
 
 const Home = () => {
     const { selectedChat } = useSelector(state=>state.myChat)
     
     
     return (
-        <div className='xl:w-[70%] w-full md:h-[90%] h-full bg-base-100 flex gap-1' >
+        <div className='xl:w-[70%] w-full md:h-[90%] h-full bg-base-100 flex gap-0.5' >
             <Navbar />
             <Contact />
             <Chat />
@@ -23,6 +24,7 @@ const Home = () => {
             <DeleteCharModal />
             <RemoveFromGroup />
             <AddNewUserToGroup />
+            <ClearChatModal />
         </div>
     )
 }   

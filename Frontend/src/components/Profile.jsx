@@ -10,7 +10,7 @@ import useMessageMutation from '../hooks/messageHooks';
 
 const Profile = () => {
   const { deleteGroup } = useChatMutation()
-  const {clearMessage}  = useMessageMutation()
+  const { clearMessage } = useMessageMutation()
   const dispatch = useDispatch()
   const isOpen = useSelector(state => state.condition.isProfileOpen)
   const closeDrawer = () => dispatch(setIsProfileOpen(false));
@@ -33,19 +33,19 @@ const Profile = () => {
 
 
   return (
-    <div className=" bg-base-300 overflow-y-auto flex flex-col items-center">
+    <div className=" bg-base-300 overflow-y-auto flex flex-col items-center ">
 
       <div
         className={`absolute top-0 right-0 h-full max-w-md w-full bg-base-300 shadow-lg transform ${isOpen ? 'translate-x-0' : 'translate-x-full'
-          } transition-transform duration-300 z-10 overflow-y-auto flex flex-col`}
+          } transition-transform duration-300 z-10 overflow-y-auto flex flex-col `}
       >
-        <div className='mt-3 flex flex-col gap-2 bg-base-300 overflow-y-auto w-full' >
-          <div className="p-4 border-b font-bold text-2xl flex justify-between items-center">
-            Profile
-            <button onClick={closeDrawer} className="text-red-500 text-xl btn btn-ghost btn-circle">
-              &times;
-            </button>
-          </div>
+        <div className="p-4 border-b font-bold text-2xl flex justify-between items-center">
+          Profile
+          <button onClick={closeDrawer} className="text-red-500 text-xl btn btn-ghost btn-circle">
+            &times;
+          </button>
+        </div>
+        <div className=' flex flex-col gap-2 bg-base-300 overflow-y-auto w-full' >
           <div className=" bg-base-100 flex flex-col gap-1">
             <div className='flex flex-col items-center  bg-base-300 py-5' >
               <div className='rounded-full overflow-hidden' >
@@ -59,11 +59,11 @@ const Profile = () => {
                   <Pencil className='size-5' />
                 </div>}
               </div>
-              <p className=' text-zinc-400' >{profileUser.email ? profileUser.email : `Group • ${profileUser?.users?.length} members`}</p>
+              <p className=' text-base-content/90' >{profileUser.email ? profileUser.email : `Group • ${profileUser?.users?.length} members`}</p>
             </div>
             <div className='bg-base-300 py-5 px-5'>
               <p className='text-lg font-semibold' >{selectedChat.isGroupChat ? "Description" : "About"}</p>
-              <p className='text-zinc-400' >{selectedChat.isGroupChat ? selectedChat?.description : profileUser?.about}</p>
+              <p className='text-base-content' >{selectedChat.isGroupChat ? selectedChat?.description : profileUser?.about}</p>
             </div>
             {/* Group users */}
             {selectedChat.isGroupChat &&
@@ -71,15 +71,15 @@ const Profile = () => {
                 <p className='text-lg font-semibold mb-2' >Users</p>
                 {/* add user */}
 
-                { selectedChat?.isGroupChat && authUser._id === selectedChat.groupAdmin._id && <div onClick={()=>{dispatch(setAddNewUserToGroup(selectedChat.users));document.getElementById('addNewUserToGroup').showModal()}} className='flex items-center gap-2 px-4 py-1 hover:bg-base-100 mb-1 cursor-pointer' >
-                  <div  className='size-12 rounded-full overflow-hidden bg-zinc-700  flex items-center justify-center' >
+                {selectedChat?.isGroupChat && authUser._id === selectedChat.groupAdmin._id && <div onClick={() => { dispatch(setAddNewUserToGroup(selectedChat.users)); document.getElementById('addNewUserToGroup').showModal() }} className='flex items-center gap-2 px-4 py-1 hover:bg-base-100 mb-1 cursor-pointer' >
+                  <div className='size-12 rounded-full overflow-hidden bg-secondary  flex items-center justify-center' >
                     <UserRoundPlus />
                   </div>
                   <p className={` `} >Add member</p>
                 </div>}
                 {
                   profileUser.users.slice().sort((a, b) => a.fullname.localeCompare(b.fullname)).map((user, idx) => (
-                    <div key={idx} className='flex items-center justify-between text-zinc-400 gap-1 hover:bg-base-100 px-4 py-1 cursor-pointer group mb-1' >
+                    <div key={idx} className='flex items-center justify-between text-base-content/80 gap-1 hover:bg-base-100 px-4 py-1 cursor-pointer group mb-1' >
                       <div className='flex items-center gap-2' >
                         <div className='size-11 rounded-full overflow-hidden' >
                           <img src={user.profile || images.avatar} alt="User Profile" />
@@ -101,7 +101,7 @@ const Profile = () => {
             </div>
 
             <div className='w-full flex flex-col gap-1 bg-base-300 p-2 text-red-700' >
-              <div onClick={()=>clearMessage.mutateAsync(selectedChat._id)} className='flex items-center gap-3 py-4 hover:bg-base-200 p-4 rounded-xl cursor-pointer' >
+              <div onClick={() => document.getElementById('clearChat').showModal()} className='flex items-center gap-3 py-4 hover:bg-base-200 p-4 rounded-xl cursor-pointer' >
                 <p><CircleMinus /> </p>
                 <p>Clear chat</p>
               </div>

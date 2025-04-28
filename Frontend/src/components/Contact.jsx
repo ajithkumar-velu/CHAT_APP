@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { images } from '../assets/assets'
-import { EllipsisVertical, LogOut, MessageSquarePlus } from 'lucide-react'
+import { EllipsisVertical, LogOut, LogOutIcon, MessageSquarePlus, Palette, User } from 'lucide-react'
 import NewChat from './NewChat'
 import useChatMutation from '../hooks/chatHook'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,6 +26,7 @@ const Contact = () => {
   const myChatsUsers = useSelector(state => state.myChat.chat)
   const { selectedChat } = useSelector(state => state.myChat)
   const { logoutUser } = useAuthMutations()
+  const [theme, setTheme] = useState("black")
 
   const dispatch = useDispatch()
   const toggleDrawer = () => dispatch(setNewChatOpen(!isOpen));
@@ -62,6 +63,21 @@ const Contact = () => {
   const handleLogout = () => {
     logoutUser.mutateAsync()
   }
+
+  const handleThemeChange = ()=>{
+    const newTheme = theme === "nord" ? "black" : "nord"
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+  }
+  useEffect(()=>{
+      const savedTheme = localStorage.getItem("theme")
+      if(savedTheme){
+        setTheme(savedTheme)
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      }
+    }, [])
+
   return (
     <div className={`bg-base-300 md:max-w-2xs w-full py-5  flex-col gap-3 px-2 overflow-y-auto relative ${selectedChat ? "md:flex hidden" : "flex"}`} >
 
@@ -80,8 +96,9 @@ const Contact = () => {
 
           <div tabIndex={0} role="button" className="m-1 cursor-pointer"><EllipsisVertical /></div>
           <ul tabIndex={0} className="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-sm">
-            <li onClick={handleLogout} ><a>Logout</a></li>
-            <li><a>Item 2</a></li>
+            <li onClick={handleThemeChange} ><a><Palette /> Themes</a></li>
+            <li><a><User/>Profile</a></li>
+            <li onClick={handleLogout} ><a><LogOutIcon/> Logout</a></li>
           </ul>
         </div>
 

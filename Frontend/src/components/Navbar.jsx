@@ -12,16 +12,13 @@ const Navbar = () => {
 
   const handleThemeChange = ()=>{
     const newTheme = theme === "nord" ? "black" : "nord"
-    
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
   }
 
   useEffect(()=>{
-    const savedTheme = localStorage.getItem("theme")
-    console.log(savedTheme);
-    
+    const savedTheme = localStorage.getItem("theme")    
     if(savedTheme){
       setTheme(savedTheme)
       document.documentElement.setAttribute("data-theme", savedTheme);
@@ -42,7 +39,10 @@ const Navbar = () => {
 
       <div className='flex flex-col items-center gap-5' >
         <div className='mb-8 flex flex-col items-center gap-5 justify-center'>
+          <div className='btn btn-ghost btn-circle' >
+
           {isLogoutBtn && <LogOut onClick={handleLogout} />}
+          </div>
           <label className="swap swap-rotate">
             {/* this hidden checkbox controls the state */}
             <input onChange={handleThemeChange} type="checkbox" className="theme-controller" value={theme} />

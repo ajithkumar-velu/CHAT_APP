@@ -115,7 +115,7 @@ const Chat = () => {
           <img src={getChatImage(selectedChat, authUserId) || images.groupAvatar} alt="" />
         </div>
         <div className=' flex-1' >
-          <p className='text-[18px] font-semibold text-zinc-300' >{getChatName(selectedChat, authUserId)}</p>
+          <p className='text-[18px] font-semibold text-base-content' >{getChatName(selectedChat, authUserId)}</p>
           <p className='text-green-400 text-[14px]' >{isTyping ? "typing..." : "Online"}</p>
         </div>
 
@@ -130,7 +130,7 @@ const Chat = () => {
               <p><Info /></p>
               <p>{selectedChat.isGroupChat ? "Group Info" : "Contact Info"}</p>
             </a></li>
-            <li onClick={() => clearMessage.mutateAsync(selectedChat._id)} >
+            <li onClick={() => document.getElementById('clearChat').showModal()} >
               <a onClick={() => dispatch(setIsChatThreeDotOpen(false))} className='flex items-center gap-3' >
                 <p><CircleMinus /> </p>
                 <p>Clear chat</p>
@@ -199,7 +199,7 @@ const Chat = () => {
           <Smile className='text-gray-400' />
           <input onChange={handleTyping} value={message} type="search" className="grow bg-base-200" placeholder="Search" />
         </div>
-        <div onClick={handleSendMessage} className='bg-base-300 p-2.5 rounded-full flex items-center justify-center' >
+        <div onClick={handleSendMessage} className='bg-base-200 p-2.5 rounded-full flex items-center justify-center' >
           <Send className=' cursor-pointer size-5' />
         </div>
       </div>

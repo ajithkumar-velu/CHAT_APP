@@ -51,7 +51,7 @@ const CreateGroupModal = () => {
         </div>
 
         <form method='dialog' className='flex items-center justify-center' >
-          <button onClick={handlesendDataCreateGroupData} className="rounded-full p-2 w-fit mt-2 bg-gray-700 cursor-pointer hover:bg-base-200" >
+          <button onClick={handlesendDataCreateGroupData} className="rounded-full p-2 w-fit mt-2 bg-secondary cursor-pointer hover:bg-secondary/80" >
             <Check className=' size-8' />
           </button>
         </form>
