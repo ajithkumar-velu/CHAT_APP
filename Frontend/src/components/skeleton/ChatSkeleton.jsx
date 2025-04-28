@@ -4,7 +4,7 @@ import React from 'react'
 const ChatSkeleton = () => {
     return (
         <div className='flex-1 px-5 overflow-y-auto' >
-            {Array(9).fill(null).map((msg, idx) => (
+            {Array(11).fill(null).map((msg, idx) => (
                 <div key={idx} className={`chat ${idx%2 === 0 ? "chat-end" : "chat-start"}`}>
                     <div className="chat-image avatar">
                         <div className="w-10 rounded-full skeleton">

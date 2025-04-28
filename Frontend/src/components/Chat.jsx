@@ -107,7 +107,7 @@ const Chat = () => {
       {/* Header */}
 
       <Profile />
-      <div className='bg-base-200 w-full h-20 flex items-center gap-3 px-5' >
+      <div className='bg-base-300 w-full h-20 flex items-center gap-3 px-5' >
         <button onClick={() => dispatch(addSelectedChat(null))} className=" text-xl cursor-pointer btn btn-ghost btn-circle flex items-center justify-center md:hidden">
           <MoveLeft />
         </button>
@@ -172,7 +172,7 @@ const Chat = () => {
                       {/* Obi-Wan Kenobi */}
                       <time className="text-xs opacity-50">{chatMessageTime(msg.createdAt)}</time>
                     </div>
-                    <div className="chat-bubble">
+                    <div className="chat-bubble bg-base-300">
                       {selectedChat.isGroupChat && authUserId !== msg.sender._id && <p className='text-[12px] -py-2 text-zinc-500' >{msg.sender.fullname}</p>}
                       <p>{msg.message}</p>
 
@@ -194,7 +194,7 @@ const Chat = () => {
       }
 
       {/* send   message */}
-      <div className='bg-base-200 py-6 flex items-center gap-2 px-5' >
+      <div className='bg-base-300 py-6 flex items-center gap-2 px-5' >
         <div className="input bg-base-200 w-full h-10 rounded-full px-5">
           <Smile className='text-gray-400' />
           <input onChange={handleTyping} value={message} type="search" className="grow bg-base-200" placeholder="Search" />

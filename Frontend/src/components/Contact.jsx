@@ -116,7 +116,7 @@ const Contact = () => {
                   <img src={getChatImage(user, authUserId) || images.avatar} alt="" />
                 </div>
                 <div >
-                  <p className='text-[17px] text-zinc-300 font-semibold' >{getChatName(user, authUserId)}</p>
+                  <p className='text-[17px] text-base-content/90 font-semibold' >{getChatName(user, authUserId)}</p>
                   <p className='text-xs text-zinc-400' >{user.latestMessage?.message || "No message"}</p>
                 </div>
               </div>

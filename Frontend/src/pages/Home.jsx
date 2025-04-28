@@ -14,7 +14,7 @@ const Home = () => {
     
     
     return (
-        <div className='xl:w-[70%] w-full md:h-[90%] h-full bg-base-100 flex gap-2' >
+        <div className='xl:w-[70%] w-full md:h-[90%] h-full bg-base-100 flex gap-1' >
             <Navbar />
             <Contact />
             <Chat />
