@@ -97,7 +97,7 @@ const Contact = () => {
           <div tabIndex={0} role="button" className="m-1 cursor-pointer"><EllipsisVertical /></div>
           <ul tabIndex={0} className="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-sm">
             <li onClick={handleThemeChange} ><a><Palette /> Themes</a></li>
-            <li><a><User/>Profile</a></li>
+            <li onClick={()=>document.getElementById('myProfile').showModal()} ><a><User/>Profile</a></li>
             <li onClick={handleLogout} ><a><LogOutIcon/> Logout</a></li>
           </ul>
         </div>

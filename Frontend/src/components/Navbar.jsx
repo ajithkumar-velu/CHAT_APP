@@ -33,8 +33,8 @@ const Navbar = () => {
     <div className={`h-full max-w-14 w-full bg-base-300 flex-col items-center justify-between py-5 hidden md:flex`} >
       <div className='flex flex-col items-center gap-5' >
         <div className='max-w-10 w-full' ><img src={images.logo} alt="" /></div>
-        <div className='mt-8' ><Home className='size-7' /></div>
-        <div><Settings className='size-7' /></div>
+        {/* <div className='mt-8' ><Home className='size-7' /></div>
+        <div><Settings className='size-7' /></div> */}
       </div>
 
       <div className='flex flex-col items-center gap-5' >
@@ -57,7 +57,7 @@ const Navbar = () => {
             </svg>
           </label>
         </div>
-        <div className='w-10' ><img src={images.avatar} alt="" /></div>
+        <div onClick={()=>document.getElementById('myProfile').showModal()} className='w-10 cursor-pointer' ><img src={images.avatar} alt="" /></div>
       </div>
     </div>
   )

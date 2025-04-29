@@ -50,7 +50,7 @@ const AddNewUserToGroup = () => {
                 {/* Selected Users */}
                 <div className='flex items-center gap-2 flex-wrap  py-3 mx-2' >
                     {addNewUserToGroup.filter(item => !val.includes(item._id)).map((user, idx) => (
-                        <div key={idx} className='flex items-center gap-1 bg-base-200 px-3 py-1 rounded-full'>
+                        <div key={idx} className='flex items-center gap-1 bg-base-100 px-3 py-1 rounded-full'>
                             <p className=' whitespace-nowrap' >{user.fullname} </p>
                             <X onClick={() => removeSelectedGroupUser(user._id)} className=' size-4 cursor-pointer hover:text-red-700' />
                         </div>
@@ -66,8 +66,8 @@ const AddNewUserToGroup = () => {
                                     <img src={user.profile || images.avatar} alt="" />
                                 </div>
                                 <div >
-                                    <p className='text-[17px] text-zinc-300 font-semibold' >{user.fullname}</p>
-                                    <p className='text-xs text-zinc-400' >{user.about}</p>
+                                    <p className='text-[17px] text-base-content font-semibold' >{user.fullname}</p>
+                                    <p className='text-xs text-base-content/80' >{user.about}</p>
                                 </div>
                             </div>
                         ))}
@@ -75,11 +75,11 @@ const AddNewUserToGroup = () => {
                     </div>
                 }
 
-                <form method='dialog' className='flex font-semibold items-center justify-between' >
+                <form method='dialog' className='flex font-semibold items-center justify-between mt-2' >
                     <div></div>
                     <div className='flex gap-1' >
                         <button className="rounded-full py-2 px-7 w-fit mt-2 cursor-pointer hover:text-white" >Cancel</button>
-                        <button onClick={handleNewUserToGroup} className="rounded-full py-2 px-7 w-fit mt-2 bg-red-700 text-black cursor-pointer hover:bg-red-700/90" >Add Users</button>
+                        <button onClick={handleNewUserToGroup} className="rounded-full py-2 px-7 w-fit mt-2 bg-red-700 text-base-content cursor-pointer hover:bg-red-700/90" >Add Users</button>
                     </div>
                 </form>
             </div>

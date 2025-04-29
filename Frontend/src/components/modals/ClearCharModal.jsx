@@ -36,7 +36,7 @@ const ClearCharModal = () => {
           <div></div>
           <div className='flex gap-1' >
             <button className="rounded-full py-2 px-7 w-fit mt-2 cursor-pointer hover:text-white" >Cancel</button>
-            <button onClick={handleDeleteGroup} className="rounded-full py-2 px-7 w-fit mt-2 bg-red-700 text-black cursor-pointer hover:bg-red-700/90" >Clear chat</button>
+            <button onClick={handleDeleteGroup} className="rounded-full py-2 px-7 w-fit mt-2 bg-red-700 text-base-content cursor-pointer hover:bg-red-700/90" >Clear chat</button>
           </div>
         </form>
       </div>
