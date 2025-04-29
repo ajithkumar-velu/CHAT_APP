@@ -16,7 +16,7 @@ const Chat = () => {
   const bottomRef = useRef(null);
   const [message, setMessage] = useState("")
   const { selectedChat } = useSelector(state => state.myChat)
-  const { createMessage, clearMessage } = useMessageMutation()
+  const { createMessage } = useMessageMutation()
   const authUserId = useSelector(state => state.auth.auth.userInfo._id)
   let messages = useSelector(state => state.messages.messages)
   messages = groupMessagesByDate(messages)

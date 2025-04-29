@@ -2,7 +2,7 @@ import { CalendarDays, Camera, Info, Mail, Pencil, User, X } from 'lucide-react'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { images } from '../../assets/assets'
-import { chatMessageTime, simpleDate } from '../../utils/formateDateTime'
+import { simpleDate } from '../../utils/formateDateTime'
 
 const MyProfile = () => {
     const { userInfo } = useSelector(state => state.auth.auth)

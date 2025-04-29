@@ -4,9 +4,8 @@ import { EllipsisVertical, LogOut, LogOutIcon, MessageSquarePlus, Palette, User 
 import NewChat from './NewChat'
 import useChatMutation from '../hooks/chatHook'
 import { useDispatch, useSelector } from 'react-redux'
-import { setIsChatThreeDotOpen, setIsProfileOpen, setIsTyping, setNewChatOpen } from '../redux/slices/conditionSlice'
+import { setIsChatThreeDotOpen, setIsProfileOpen, setNewChatOpen } from '../redux/slices/conditionSlice'
 import { getChatImage, getChatName } from '../utils/getNameImage'
-import NewChatSkeleton from './skeleton/NewChatSkeleton'
 import useMessageMutation from '../hooks/messageHooks'
 import { addSelectedChat } from '../redux/slices/chatSlice'
 import useAuthMutations from '../hooks/authHook'
@@ -19,7 +18,6 @@ const Contact = () => {
   const { getChats } = useChatMutation()
   const { getAllMessage } = useMessageMutation()
   const isgetMyChatUsers = useSelector(state => state.condition.isgetMyChatUsers)
-  const { isgetAllUsers } = useSelector(state => state.condition)
 
   const isOpen = useSelector(state => state.condition.newChatOpen)
   const authUserId = useSelector(state => state.auth.auth.userInfo._id)

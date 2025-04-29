@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { CircleMinus, Pencil, Trash, UserRoundPlus } from 'lucide-react';
 import { images } from '../assets/assets';
-import useChatMutation from '../hooks/chatHook';
 import { setIsProfileOpen } from '../redux/slices/conditionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { simpleDate, SimpleDateMonthDay } from '../utils/formateDateTime';
 import { addRemoveFromGroupUser, setAddNewUserToGroup, setRenameGroupName } from '../redux/slices/chatSlice';
-import useMessageMutation from '../hooks/messageHooks';
 
 const Profile = () => {
-  const { deleteGroup } = useChatMutation()
-  const { clearMessage } = useMessageMutation()
   const dispatch = useDispatch()
   const isOpen = useSelector(state => state.condition.isProfileOpen)
   const closeDrawer = () => dispatch(setIsProfileOpen(false));
   const authUser = useSelector(state => state.auth.auth.userInfo)
-  const { selectedChat, addNewUserToGroup } = useSelector(state => state.myChat)
+  const { selectedChat } = useSelector(state => state.myChat)
   const profileUser = selectedChat.isGroupChat ? selectedChat :
     selectedChat.users[0]._id === authUser._id ? selectedChat.users[1] : selectedChat.users[0]
 
@@ -87,7 +83,7 @@ const Profile = () => {
                         <p className={` `} >{authUser._id === user._id ? "You" : user.fullname}</p>
                       </div>
                       <p className={` `} >{selectedChat.groupAdmin._id === user._id ? "(Admin)" : ""}</p>
-                      {authUser._id === selectedChat.groupAdmin._id && selectedChat.groupAdmin._id !== user._id && <div onClick={() => handleRemoveFromGroup(user)} className=' hidden items-center gap-2 text-red-800 group-hover:flex' ><CircleMinus className='size-5' /> Remove</div>}
+                      {authUser._id === selectedChat.groupAdmin._id && selectedChat.groupAdmin._id !== user._id && <div onClick={() => handleRemoveFromGroup(user)} className=' sm:hidden flex items-center gap-2 text-red-800 group-hover:flex' ><CircleMinus className='size-5' /> Remove</div>}
                     </div>
                   ))
                 }

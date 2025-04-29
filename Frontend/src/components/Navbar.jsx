@@ -7,7 +7,6 @@ import useAuthMutations from '../hooks/authHook'
 const Navbar = () => {
   const isLogoutBtn = useSelector(state => state.auth.isautenticated)
   const { logoutUser} =  useAuthMutations()
-  const { selectedChat } = useSelector(state=>state.myChat)
   const [theme, setTheme] = useState("black")
 
   const handleThemeChange = ()=>{
