@@ -25,7 +25,18 @@ const App = () => {
         <p><span className='text-black font-bold' >Note:</span> This chat app is currently in development.</p>
         <p>features may change and you might encounter bugs.</p>
       </div>
-      <Toaster />
+      <Toaster
+  position="top-center"
+  containerStyle={{
+    position: 'fixed', // Required for z-index to work
+    zIndex: 999999,    // Extremely high value to dominate DaisyUI
+  }}
+  toastOptions={{
+    style: {
+      zIndex: 999999,  // Same as container
+    },
+  }}
+/>
       <GroupRenameModal />
       <Routes>
         <Route path={'/'} element={isLogin ? <Home /> : <Navigate to='/login' />} />

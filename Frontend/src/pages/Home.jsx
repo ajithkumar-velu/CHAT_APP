@@ -10,6 +10,8 @@ import RemoveFromGroup from '../components/modals/RemoveFromGroup'
 import AddNewUserToGroup from '../components/modals/AddNewUserToGroup'
 import ClearChatModal from '../components/modals/ClearChatModal'
 import MyProfile from '../components/modals/MyProfile'
+import UpdateName from '../components/modals/UpdateName'
+import UpdateAbout from '../components/modals/UpdateAbout'
 
 const Home = () => {
     const { selectedChat } = useSelector(state=>state.myChat)
@@ -27,6 +29,8 @@ const Home = () => {
             <AddNewUserToGroup />
             <ClearChatModal />
             <MyProfile />
+            <UpdateName />
+            <UpdateAbout />
         </div>
     )
 }   

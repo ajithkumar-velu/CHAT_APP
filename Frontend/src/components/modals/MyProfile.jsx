@@ -6,7 +6,10 @@ import { simpleDate } from '../../utils/formateDateTime'
 
 const MyProfile = () => {
     const { userInfo } = useSelector(state => state.auth.auth)
-    console.log(userInfo);
+    // console.log(userInfo);
+    const handleProfileUpdate = ()=>{
+        
+    }
 
     return (
         <dialog id="myProfile" className="modal">
@@ -42,7 +45,7 @@ const MyProfile = () => {
                             <p className='font-semibold' >Name</p>
                             <p className='' >{userInfo?.fullname}</p>
                         </div>
-                        <div title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
+                        <div onClick={()=>document.getElementById('editName').showModal()} title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
                             <Pencil className='size-5' />
                         </div>
                     </div>
@@ -52,9 +55,9 @@ const MyProfile = () => {
                             <p className='font-semibold' >Mail</p>
                             <p className='' >{userInfo?.email}</p>
                         </div>
-                        <div title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
+                        {/* <div title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
                             <Pencil className='size-5' />
-                        </div>
+                        </div> */}
                     </div>
                     <div className='flex items-center gap-4 relative' >
                         <Info />
@@ -62,7 +65,7 @@ const MyProfile = () => {
                             <p className='font-semibold' >About</p>
                             <p className='' >{userInfo?.about}</p>
                         </div>
-                        <div title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
+                        <div onClick={()=>document.getElementById('editAbout').showModal()}  title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
                             <Pencil className='size-5' />
                         </div>
                     </div>

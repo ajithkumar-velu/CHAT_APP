@@ -20,7 +20,7 @@ const Contact = () => {
   const isgetMyChatUsers = useSelector(state => state.condition.isgetMyChatUsers)
 
   const isOpen = useSelector(state => state.condition.newChatOpen)
-  const authUserId = useSelector(state => state.auth.auth.userInfo._id)
+  const authUserId = useSelector(state => state?.auth?.auth?.userInfo?._id)
   const myChatsUsers = useSelector(state => state.myChat.chat)
   const { selectedChat } = useSelector(state => state.myChat)
   const { logoutUser } = useAuthMutations()

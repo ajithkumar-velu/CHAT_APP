@@ -14,3 +14,7 @@ export const performLogout = async()=>{
     const res = await axiosInstance.get(ApiRoutes.LOGOUT)
     return res.data
 }
+export const performProfileUpdate = async(data)=>{
+    const res = await axiosInstance.post(ApiRoutes.PROFILEUPDATE, data)
+    return res.data
+}

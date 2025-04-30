@@ -1,9 +1,9 @@
 
 import { useDispatch } from 'react-redux'
 import { useMutation } from '@tanstack/react-query'
-import { performLogin, performLogout, performSignup } from '../api/auth'
+import { performLogin, performLogout, performProfileUpdate, performSignup } from '../api/auth'
 import { addAuth, removeAuth } from '../redux/slices/authSlice'
-import { useNavigate} from 'react-router-dom'
+import { data, useNavigate} from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { setIsLoginLow } from '../redux/slices/conditionSlice'
 const useAuthMutations = ()=>{
@@ -28,6 +28,8 @@ const useAuthMutations = ()=>{
             return performLogin(data)
         },
         onSuccess: (data)=>{
+            console.log(data);
+            
             toast.success(data.message)
             dispatch(addAuth(data))
             
@@ -53,9 +55,22 @@ const useAuthMutations = ()=>{
         }
     })
 
+    const profileUpdate = useMutation({
+        mutationFn: performProfileUpdate,
+        onSuccess: (data)=>{
+            console.log(data);
+            
+            dispatch(addAuth(data))
+            toast.success("Profile Updated")
+        },
+        onError: (err)=>{
+            toast(err.reponse?.data?.message)
+        }
+    })
+
     
 
-    return {signupUser, loginUser, logoutUser}
+    return {signupUser, loginUser, logoutUser, profileUpdate}
 }
 
 export default useAuthMutations

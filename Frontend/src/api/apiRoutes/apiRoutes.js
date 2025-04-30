@@ -2,7 +2,9 @@ const ApiRoutes = {
     SIGNUP: "/api/auth/signup",
     LOGIN: "/api/auth/login",
     LOGOUT: "/api/auth/logout",
+
     ALLUSERS: "/api/user/users",
+    PROFILEUPDATE: "/api/user/update",
 
     POSTCHAT: "/api/chat",
     GETCHAT: "/api/chat",
