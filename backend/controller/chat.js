@@ -1,5 +1,6 @@
 import Chat from "../models/ChatModel.js";
 import Message from "../models/MessageModel.js";
+import { v2 as cloudinary } from "cloudinary";
 
 // add chat
 export const postChat = async (req, res) => {
@@ -162,5 +163,36 @@ export const addToGroup = async (req, res) => {
     } catch (error) {
         console.log("Error in addToGroup", error);
         res.status(500).json({ message: "Internal server Error" })
+    }
+}
+export const updateGroupProfile = async (req, res) => {
+    try {
+        const { profile, chatId } = req.body
+        if (!chatId) return res.status(400).json({ message: "Invalid chat" })
+        if (!profile) return res.status(400).json({ message: "Image required" })
+        const fchat = await Chat.find({ _id: chatId }).populate("users", "-password").populate("groupAdmin", "-password")
+
+        if (!fchat) return res.status(400).json({ message: "Chat not found" })
+
+            // if (fchat.groupAdmin._id !== req.user._id) {
+                //     return res.status(400).json({ message: "Access dineid" })
+            // }
+            
+            console.log("check");
+
+        if (fchat.profile) {
+
+            await cloudinary.uploader.destroy(fchat.profile.split("/").pop().split(".")[0])
+        }
+        const image = await cloudinary.uploader.upload(profile)
+
+        const chat = await Chat.findByIdAndUpdate(chatId,
+            { profile: image.secure_url },
+            { new: true }
+        ).populate("users", "-password").populate("groupAdmin", "-password")
+        res.status(200).json(chat)
+    } catch (error) {
+        console.log("Error in update group profile");
+        res.status(500).json({ message: "Internal Server Error" })
     }
 }

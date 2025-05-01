@@ -42,3 +42,8 @@ export const performAddUserToGroup = async (data) => {
     return res.data
 }
 
+export const performUpdateGroupProfile = async (data) => {    
+    const res = await axiosInstance.post(ApiRoutes.UPDATEGROUPPROFILE, data)
+    return res.data
+}
+

@@ -61,6 +61,7 @@ const Contact = () => {
   const handleLogout = () => {
     logoutUser.mutateAsync()
   }
+console.log(filterSerach);
 
   const handleThemeChange = ()=>{
     const newTheme = theme === "nord" ? "black" : "nord"
@@ -128,11 +129,11 @@ const Contact = () => {
 
               <div key={idxx} onClick={() => handleOnclickGetUserMessages(user)} className={`px-3 py-3 rounded-xl flex items-center gap-2 hover:bg-base-100 cursor-pointer ${selectedChat?._id === user._id ? "bg-base-100" : "bg-base-200"}`} >
                 <div className='size-12 rounded-full overflow-hidden' >
-                  <img src={getChatImage(user, authUserId) || images.avatar} alt="" />
+                  <img src={ user?.profile || getChatImage(user, authUserId) || images.avatar} alt="" />
                 </div>
                 <div >
                   <p className='text-[17px] text-base-content/90 font-semibold' >{getChatName(user, authUserId)}</p>
-                  <p className='text-xs text-zinc-400' >{user.latestMessage?.message || "No message"}</p>
+                  <p className='text-xs text-zinc-400' >{user.latestMessage?.message  }</p>
                 </div>
               </div>
             ))}

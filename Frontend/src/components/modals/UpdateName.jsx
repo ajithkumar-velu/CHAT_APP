@@ -7,7 +7,6 @@ const UpdateName = () => {
     const { userInfo } = useSelector(state => state.auth.auth)
     const [fullname, setFullname] = useState(userInfo.fullname)
     const { profileUpdate } = useAuthMutations()
-    console.log(userInfo);
     
     const handleEditName = ()=>{
         profileUpdate.mutateAsync({fullname: fullname})

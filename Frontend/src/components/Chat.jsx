@@ -112,7 +112,7 @@ const Chat = () => {
           <MoveLeft />
         </button>
         <div className='size-12 rounded-full overflow-hidden' >
-          <img src={getChatImage(selectedChat, authUserId) || images.groupAvatar} alt="" />
+          <img src={selectedChat.profile || getChatImage(selectedChat, authUserId) || images.groupAvatar} alt="" />
         </div>
         <div className=' flex-1' >
           <p className='text-[18px] font-semibold text-base-content' >{getChatName(selectedChat, authUserId)}</p>

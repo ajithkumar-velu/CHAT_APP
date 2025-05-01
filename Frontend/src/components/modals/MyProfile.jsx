@@ -1,14 +1,23 @@
-import { CalendarDays, Camera, Info, Mail, Pencil, User, X } from 'lucide-react'
+import { CalendarDays, Camera, Info, Loader, Mail, Pencil, User, X } from 'lucide-react'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { images } from '../../assets/assets'
 import { simpleDate } from '../../utils/formateDateTime'
+import useAuthMutations from '../../hooks/authHook'
 
 const MyProfile = () => {
     const { userInfo } = useSelector(state => state.auth.auth)
+    const { profileUpdate } = useAuthMutations()
+    const { isProfileLow } = useSelector(state=>state.condition)
     // console.log(userInfo);
-    const handleProfileUpdate = ()=>{
-        
+    const handleProfileUpdate = async (e) => {
+        const profile = e.target.files[0]
+        if(!profile) return
+        const reader = new FileReader()
+        reader.readAsDataURL(profile)
+        reader.onload  = async ()=>{
+            profileUpdate.mutateAsync({profile: reader.result})
+        }
     }
 
     return (
@@ -25,13 +34,21 @@ const MyProfile = () => {
                         <div className='flex flex-col items-center  bg-base-300 py-5 ' >
                             <div className=' relative' >
 
-                                <div className='rounded-full overflow-hidden' >
-                                    <img className='w-64' src={userInfo.profile || images.avatar} alt="" />
+                                <div className='rounded-full overflow-hidden w-64 h-64' >
+                                    {isProfileLow?
+                                    <div className='w-full h-full flex items-center justify-center bg-secondary skeleton' >
+                                        <p className='loading-md loading' ></p>
+                                    </div>:
+                                    <img className='w-full h-full object-cover' src={userInfo.profile || images.avatar} alt="" />
+                                }
                                 </div>
-                                <div className=' absolute bg-base-200 hover:bg-secondary bg- cursor-pointer p-3 rounded-full right-4 bottom-5 z-[100px]' >
-
-                                    <Camera className='size-6 text-base-content' />
-                                </div>
+                                
+                                <label className=' absolute bg-base-200 hover:bg-secondary bg- cursor-pointer p-3 rounded-full right-4 bottom-5 z-[100px]' >
+                                    <input onChange={handleProfileUpdate} type="file" className=' hidden' accept='image/*' />
+                                    <span>
+                                        <Camera className='size-6 text-base-content' />
+                                    </span>
+                                </label>
                             </div>
 
                         </div>
@@ -45,7 +62,7 @@ const MyProfile = () => {
                             <p className='font-semibold' >Name</p>
                             <p className='' >{userInfo?.fullname}</p>
                         </div>
-                        <div onClick={()=>document.getElementById('editName').showModal()} title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
+                        <div onClick={() => document.getElementById('editName').showModal()} title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
                             <Pencil className='size-5' />
                         </div>
                     </div>
@@ -65,7 +82,7 @@ const MyProfile = () => {
                             <p className='font-semibold' >About</p>
                             <p className='' >{userInfo?.about}</p>
                         </div>
-                        <div onClick={()=>document.getElementById('editAbout').showModal()}  title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
+                        <div onClick={() => document.getElementById('editAbout').showModal()} title='Rename Group' className=' cursor-pointer w-fit p-2 rounded-full absolute right-0 -top-1' >
                             <Pencil className='size-5' />
                         </div>
                     </div>

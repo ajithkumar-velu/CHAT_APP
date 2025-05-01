@@ -1,10 +1,11 @@
 import React from 'react';
-import { CircleMinus, Pencil, Trash, UserRoundPlus } from 'lucide-react';
+import { Camera, CircleMinus, Pencil, Trash, UserRoundPlus } from 'lucide-react';
 import { images } from '../assets/assets';
 import { setIsProfileOpen } from '../redux/slices/conditionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { simpleDate, SimpleDateMonthDay } from '../utils/formateDateTime';
 import { addRemoveFromGroupUser, setAddNewUserToGroup, setRenameGroupName } from '../redux/slices/chatSlice';
+import useChatMutation from '../hooks/chatHook';
 
 const Profile = () => {
   const dispatch = useDispatch()
@@ -12,6 +13,8 @@ const Profile = () => {
   const closeDrawer = () => dispatch(setIsProfileOpen(false));
   const authUser = useSelector(state => state.auth.auth.userInfo)
   const { selectedChat } = useSelector(state => state.myChat)
+  const { addUpdateGroupProfile } = useChatMutation()
+  const { isGroupProfileLow } = useSelector(state => state.condition)
   const profileUser = selectedChat.isGroupChat ? selectedChat :
     selectedChat.users[0]._id === authUser._id ? selectedChat.users[1] : selectedChat.users[0]
 
@@ -26,6 +29,15 @@ const Profile = () => {
     document.getElementById('removeFromGroup').showModal()
   }
 
+  const handleProfileUpdate = async (e) => {
+    const profile = e.target.files[0]
+    if (!profile) return
+    const reader = new FileReader()
+    reader.readAsDataURL(profile)
+    reader.onload = async () => {
+      addUpdateGroupProfile.mutateAsync({ profile: reader.result, chatId: selectedChat._id })
+    }
+  }
 
 
   return (
@@ -44,8 +56,23 @@ const Profile = () => {
         <div className=' flex flex-col gap-2 bg-base-300 overflow-y-auto w-full' >
           <div className=" bg-base-100 flex flex-col gap-1">
             <div className='flex flex-col items-center  bg-base-300 py-5' >
-              <div className='rounded-full overflow-hidden' >
-                <img className='w-64' src={selectedChat.isGroupChat ? profileUser.profile || images.groupAvatar : profileUser.profile || images.avatar} alt="" />
+              <div className=' relative' >
+
+                <div className='rounded-full overflow-hidden w-64 h-64' >
+                  {
+                    isGroupProfileLow ?
+                      <div className='w-full h-full flex items-center justify-center bg-secondary skeleton' >
+                        <p className='loading-md loading' ></p>
+                      </div> :
+                      <img className='w-full h-full object-cover' src={selectedChat.isGroupChat ? profileUser.profile || images.groupAvatar : profileUser.profile || images.avatar} alt="" />
+                  }
+                </div>
+                <label className=' absolute bg-base-200 hover:bg-secondary bg- cursor-pointer p-3 rounded-full right-4 bottom-5 z-[100px]' >
+                  <input onChange={handleProfileUpdate} type="file" className=' hidden' accept='image/*' />
+                  <span>
+                    <Camera className='size-6 text-base-content' />
+                  </span>
+                </label>
               </div>
               {/* chat name */}
               <div className=' relative text-lg font-semibold mt-5 w-full ' >

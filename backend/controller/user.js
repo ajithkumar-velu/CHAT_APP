@@ -1,4 +1,5 @@
 import User from "../models/UserModel.js";
+import {v2 as cloudinary} from 'cloudinary'
 
 export const getAuthUser = async (req, res) => {
     try {
@@ -23,12 +24,20 @@ export const getAllUsers = async (req, res) => {
 // todo
 export const profileUpdate = async(req, res)=>{
     try {
-        const {fullname, email, about} = req.body
-        if(!fullname && !email && !about) return res.status(400).json({message: "Reqired field"})
+        const {fullname, email, about, profile} = req.body
+        if(!fullname && !email && !about && !profile) return res.status(400).json({message: "Reqired field"})
         const updatedFields = {}
         if(fullname) updatedFields.fullname = fullname
         if(email) updatedFields.email = email
         if(about) updatedFields.about = about
+        
+        if(profile){
+            if(req.user.profile){
+                await cloudinary.uploader.destroy(req.user.profile.split('/').pop().split(".")[0])
+            }
+            const image = await cloudinary.uploader.upload(profile)
+            updatedFields.profile = image.secure_url
+        }
         const userInfo = await User.findByIdAndUpdate(
             req.user._id, 
             {$set: updatedFields},

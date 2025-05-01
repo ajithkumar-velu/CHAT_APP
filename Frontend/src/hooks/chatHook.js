@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux"
 import { useMutation } from '@tanstack/react-query'
-import { performAddUserToGroup, performCreateGroup, performDeleteGroup, performGetAllUsers, performGetChats, performPostChat, performRemoveFromGroup, performRenameGroup } from "../api/chat"
+import { performAddUserToGroup, performCreateGroup, performDeleteGroup, performGetAllUsers, performGetChats, performPostChat, performRemoveFromGroup, performRenameGroup, performUpdateGroupProfile } from "../api/chat"
 import toast from "react-hot-toast"
 import { addMyChat, addNewChat, addSelectedChat, setAllUsers } from "../redux/slices/chatSlice"
-import { setIsGetMyChatUsers, setIsGetUsers } from "../redux/slices/conditionSlice"
+import { setGroupIsProfileLow, setIsGetMyChatUsers, setIsGetUsers } from "../redux/slices/conditionSlice"
 
 const useChatMutation = () => {
     const dispathch = useDispatch()
@@ -106,7 +106,25 @@ const useChatMutation = () => {
         }
     })
 
-    return { getAllUsers, postChat, getChats, createGroup, deleteGroup, renameGroup, removeFromGroup, addUserToGroup }
+    const addUpdateGroupProfile = useMutation({
+        mutationFn: performUpdateGroupProfile,
+        onMutate: ()=>{
+            dispathch(setGroupIsProfileLow(true))
+        },
+        onSuccess: (data) => {
+            dispathch(addSelectedChat(data))
+            toast.success("Profile updated Successfully")
+        },
+        onError: (err) => {
+            toast.error(err.response?.data?.message)
+        },
+        onSettled: ()=>{
+            dispathch(setGroupIsProfileLow(false))
+
+        }
+    })
+
+    return { getAllUsers, postChat, getChats, createGroup, deleteGroup, renameGroup, removeFromGroup, addUserToGroup, addUpdateGroupProfile }
 
 }
 

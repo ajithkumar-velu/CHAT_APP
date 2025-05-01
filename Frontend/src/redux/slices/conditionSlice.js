@@ -14,6 +14,8 @@ const conditionSlice = createSlice({
         isGroup: false,
         createGroupUsersData: null,
         isChatThreeDotOpen: false,
+        isProfileLow: false, 
+        isGroupProfileLow: false 
     },
     reducers: {
         setIsGetUsers: (state, action)=>{
@@ -49,7 +51,13 @@ const conditionSlice = createSlice({
         setIsChatThreeDotOpen: (state, action)=>{
             state.isChatThreeDotOpen = action.payload
         },
+        setIsProfileLow: (state, action)=>{
+            state.isProfileLow = action.payload
+        },
+        setGroupIsProfileLow: (state, action)=>{
+            state.isGroupProfileLow = action.payload
+        },
     }
 })
-export const { setIsGetUsers, setNewChatOpen, setIsGetMyChatUsers, setIsTyping, setIsLoginLow, setIsChatLow, setIsProfileOpen, setIsGroup, setCreateGroupUsersData, setIsChatThreeDotOpen } = conditionSlice.actions
+export const { setIsGetUsers, setNewChatOpen, setIsGetMyChatUsers, setIsTyping, setIsLoginLow, setIsChatLow, setIsProfileOpen, setIsGroup, setCreateGroupUsersData, setIsChatThreeDotOpen, setIsProfileLow, setGroupIsProfileLow } = conditionSlice.actions
 export default conditionSlice.reducer
