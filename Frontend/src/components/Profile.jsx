@@ -67,12 +67,13 @@ const Profile = () => {
                       <img className='w-full h-full object-cover' src={selectedChat.isGroupChat ? profileUser.profile || images.groupAvatar : profileUser.profile || images.avatar} alt="" />
                   }
                 </div>
-                <label className=' absolute bg-base-200 hover:bg-secondary bg- cursor-pointer p-3 rounded-full right-4 bottom-5 z-[100px]' >
+                
+                {selectedChat.groupAdmin._id === authUser._id && <label className=' absolute bg-base-200 hover:bg-secondary bg- cursor-pointer p-3 rounded-full right-4 bottom-5 z-[100px]' >
                   <input onChange={handleProfileUpdate} type="file" className=' hidden' accept='image/*' />
                   <span>
                     <Camera className='size-6 text-base-content' />
                   </span>
-                </label>
+                </label>}
               </div>
               {/* chat name */}
               <div className=' relative text-lg font-semibold mt-5 w-full ' >
