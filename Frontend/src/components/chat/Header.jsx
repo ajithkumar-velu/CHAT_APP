@@ -17,7 +17,7 @@ const Header = () => {
     const { typingUser } = useSelector(state => state.condition)
     const { onlineUsers } = useSelector(state => state.condition)
     const toggleDrawer = () => dispatch(setIsProfileOpen(!isProfileOpen));
-    
+
     // stop typing
     useEffect(() => {
         const handelLog = (chatId, user) => {
@@ -44,7 +44,7 @@ const Header = () => {
         socket.on("typing", handelLog)
         return () => { socket.off("typing", handelLog) }
     })
-    console.log(selectedChat.users.filter(i=>i._id !== authUserId)[0]._id);
+    console.log(selectedChat?.users.filter(i => i._id !== authUserId)[0]?._id);
 
 
     return (
@@ -67,7 +67,15 @@ const Header = () => {
                                 </div>
                             ))
                             :
-                            typingUser[0] ? `${typingUser[0]} is typing...` : !selectedChat.isGroupChat && (onlineUsers?.includes(selectedChat.users.filter(i=>i._id !== authUserId)[0]._id)?  <span className=' font-semibold' >Online</span> : <span className='text-secondary-content/70 font-semibold' >Offline</span>)
+                            typingUser[0] ?
+                                `${typingUser[0]} is typing...`
+                                : selectedChat.isGroupChat ?
+                                    selectedChat.users.map((user, k) => (
+                                        <div key={k} className='text-base-content' >
+                                            {selectedChat.users.length-1 === k? `${user._id === authUserId? "You": user.fullname }.`: `${user._id === authUserId? "You": user.fullname}, `}
+                                            
+                                        </div>))
+                                    : (onlineUsers?.includes(selectedChat.users.filter(i => i._id !== authUserId)[0]._id) ? <span className=' font-semibold' >Online</span> : <span className='text-secondary-content/70 font-semibold' >Offline</span>)
                         }{typingUser.length > 1 && "are typing..."}
                     </div>
                 </div>
