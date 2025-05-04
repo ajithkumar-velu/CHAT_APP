@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import store from './redux/store.js'
 const queryClient = new QueryClient()
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  
     <BrowserRouter>
       <Provider store={store} >
         <QueryClientProvider client={queryClient} >
@@ -16,5 +16,5 @@ createRoot(document.getElementById('root')).render(
         </QueryClientProvider>
       </Provider>
     </BrowserRouter>
-  </StrictMode>
+  
 )

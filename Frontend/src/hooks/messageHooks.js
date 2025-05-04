@@ -32,7 +32,8 @@ const useMessageMutation = () => {
         mutationFn: performCreateMessage,
         onSuccess: (data)=>{
             socket.emit("new message", data);
-            socket.emit("stop_typing", selectedChat, authUserId);
+            // dispatch(clearMessage)
+            // socket.emit("stop_typing", selectedChat, authUserId);
             dispatch(addNewMessage(data))
             dispatch(addNewMessageId(data))
         },

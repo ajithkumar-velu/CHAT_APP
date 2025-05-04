@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addSelectedChat, resetSelectedChat } from '../../redux/slices/chatSlice'
 import { CircleMinus, CircleX, EllipsisVertical, Info, MoveLeft } from 'lucide-react'
 import { getChatImage, getChatName } from '../../utils/getNameImage'
 import { images } from '../../assets/assets'
-import { setIsChatThreeDotOpen, setIsProfileOpen, setIsTyping } from '../../redux/slices/conditionSlice'
+import { addTypingUser, removeTypingUser, setIsChatThreeDotOpen, setIsProfileOpen, setIsTyping } from '../../redux/slices/conditionSlice'
 import socket from '../../config/socket'
 
 const Header = () => {
@@ -14,31 +14,39 @@ const Header = () => {
     const { isChatThreeDotOpen } = useSelector(state => state.condition)
     const { isProfileOpen } = useSelector(state => state.condition)
     const isTyping = useSelector(state => state.condition.isTyping)
+    const { typingUser } = useSelector(state => state.condition)
+    const { onlineUsers } = useSelector(state => state.condition)
     const toggleDrawer = () => dispatch(setIsProfileOpen(!isProfileOpen));
+    
+    // stop typing
+    useEffect(() => {
+        const handelLog = (chatId, user) => {
+            if (selectedChat._id === chatId._id) {
+                dispatch(setIsTyping(false))
+                dispatch(removeTypingUser(user?.fullname))
+            }
+        }
+        socket.on("stop typing", handelLog)
+        return () => { socket.off("stop typing", handelLog) }
+    })
+
 
     // get trping 
     useEffect(() => {
-        const handelLog = (chatId) => {
-            if (selectedChat._id === chatId) {
+        const handelLog = (chatId, user) => {
+            if (selectedChat._id === chatId._id) {
+                dispatch(addTypingUser(user.fullname))
                 dispatch(setIsTyping(true))
-            }
-        }
-        socket.on("styping", handelLog)
-        return () => { socket.off("styping", handelLog) }
-    })
-
-    // stop typing
-    useEffect(() => {
-        const handelLog = (chatId) => {
-
-
-            if (selectedChat._id === chatId) {
+            } else {
                 dispatch(setIsTyping(false))
             }
         }
-        socket.on("sstyping", handelLog)
-        return () => { socket.off("sstyping", handelLog) }
+        socket.on("typing", handelLog)
+        return () => { socket.off("typing", handelLog) }
     })
+    console.log(selectedChat.users.filter(i=>i._id !== authUserId)[0]._id);
+
+
     return (
         <div className='bg-base-300 w-full h-20 flex items-center gap-3 px-5' >
             <button onClick={() => dispatch(addSelectedChat(null))} className=" text-xl cursor-pointer btn btn-ghost btn-circle flex items-center justify-center md:hidden">
@@ -49,7 +57,20 @@ const Header = () => {
             </div>
             <div className=' flex-1' >
                 <p className='text-[18px] font-semibold text-base-content' >{getChatName(selectedChat, authUserId)}</p>
-                <p className='text-green-400 text-[14px]' >{isTyping ? "typing..." : "Online"}</p>
+                <div className='text-green-500 text-[14px]' >
+                    <div className='flex items-center gap-2' >
+
+                        {typingUser.length > 1 ?
+                            typingUser.map((u, id) => (
+                                <div key={id} >
+                                    {isTyping ? typingUser.length - 1 === id ? `${u}` : `${u}, ` : !selectedChat.isGroupChat && "Online"}
+                                </div>
+                            ))
+                            :
+                            typingUser[0] ? `${typingUser[0]} is typing...` : !selectedChat.isGroupChat && (onlineUsers?.includes(selectedChat.users.filter(i=>i._id !== authUserId)[0]._id)?  <span className=' font-semibold' >Online</span> : <span className='text-secondary-content/70 font-semibold' >Offline</span>)
+                        }{typingUser.length > 1 && "are typing..."}
+                    </div>
+                </div>
             </div>
 
 

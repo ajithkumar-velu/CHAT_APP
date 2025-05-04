@@ -15,7 +15,9 @@ const conditionSlice = createSlice({
         createGroupUsersData: null,
         isChatThreeDotOpen: false,
         isProfileLow: false, 
-        isGroupProfileLow: false 
+        isGroupProfileLow: false,
+        typingUser: [],
+        onlineUsers: null,
     },
     reducers: {
         setIsGetUsers: (state, action)=>{
@@ -57,7 +59,22 @@ const conditionSlice = createSlice({
         setGroupIsProfileLow: (state, action)=>{
             state.isGroupProfileLow = action.payload
         },
+        addTypingUser: (state, action)=>{
+            if(!state.typingUser.includes(action.payload)){
+                state.typingUser.push(action.payload)
+            }
+        },
+        removeTypingUser: (state, action)=>{
+            state.typingUser = state.typingUser.filter(i=>i!==action.payload)
+        },
+        clearTypingUser: (state)=>{
+            state.typingUser = []
+        },
+        setOnlineUsers: (state, action)=>{
+            state.onlineUsers = action.payload
+        }
+
     }
 })
-export const { setIsGetUsers, setNewChatOpen, setIsGetMyChatUsers, setIsTyping, setIsLoginLow, setIsChatLow, setIsProfileOpen, setIsGroup, setCreateGroupUsersData, setIsChatThreeDotOpen, setIsProfileLow, setGroupIsProfileLow } = conditionSlice.actions
+export const { setIsGetUsers, setNewChatOpen, setIsGetMyChatUsers, setIsTyping, setIsLoginLow, setIsChatLow, setIsProfileOpen, setIsGroup, setCreateGroupUsersData, setIsChatThreeDotOpen, setIsProfileLow, setGroupIsProfileLow, addTypingUser, removeTypingUser, clearTypingUser, setOnlineUsers } = conditionSlice.actions
 export default conditionSlice.reducer

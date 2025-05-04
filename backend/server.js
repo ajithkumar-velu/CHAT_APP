@@ -8,7 +8,7 @@ import authRoute from "./routes/authRoute.js"
 import chatRoute from "./routes/chatRoute.js"
 import messageRoute from "./routes/messageRoute.js"
 import userRoute from "./routes/userRoute.js"
-import {v2 as cloudinary} from "cloudinary"
+import { v2 as cloudinary } from "cloudinary"
 // import { createUsers } from "./test.js"
 import { Server } from 'socket.io'
 import { createServer } from 'http'
@@ -16,20 +16,20 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3000
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+	cloud_name: process.env.CLOUDINARY_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
 connectDb()
 // createUsers()
 app.use(bodyParser.urlencoded({ extended: true, limit: "5mb" }))
 app.use(cookieParser())
-app.use(express.json({ limit: '5mb'}))
+app.use(express.json({ limit: '5mb' }))
 app.use(cors({
-    origin: [process.env.FRONTEND_URL],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+	origin: [process.env.FRONTEND_URL],
+	credentials: true,
+	methods: ["GET", "POST", "PUT", "DELETE"],
 }))
 const server = createServer(app);
 
@@ -39,79 +39,75 @@ app.use("/api/message", messageRoute)
 app.use("/api/user", userRoute)
 
 app.get("", (req, res) => {
-    res.send("Check the server")
+	res.send("Check the server")
 })
 
 
 const io = new Server(server, {
-    cors: {
-        origin: [process.env.FRONTEND_URL],
-        credentials: true,
-        methods: ["GET", "POST", "PUT", "DELETE"],
-    }
+	cors: {
+		origin: [process.env.FRONTEND_URL],
+		credentials: true,
+		methods: ["GET", "POST", "PUT", "DELETE"],
+	}
 })
 
-io.on('connection', (socket) => {
-    console.log('A user connected: ' + socket.id);
+let onlineUsers = new Map();
 
-    // Join user and message send to client
-    const setupHandler = (userId) => {
+// Socket.io connection
+io.on("connection", (socket) => {
+	console.log("New client connected:", socket.id);
 
-        if (!socket.hasJoined) {
-            socket.join(userId);
-            socket.hasJoined = true;
-            console.log("User joined:", userId);
-            socket.emit("connected");
-        }
-    };
-    const newMessageHandler = (newMessageReceived) => {
-        console.log(newMessageReceived);
+	// Join user to their own room (user id)
+	socket.on("setup", (userData) => {
+		onlineUsers.set(userData._id, socket.id);
+		console.log(onlineUsers);
+		io.emit("online users", Array.from(onlineUsers.keys()));
+		socket.join(userData._id);
+		console.log("User joined room:", userData.fullname);
+		socket.emit("connected");
+	});
 
-        let chat = newMessageReceived?.chat;
-        chat?.users.forEach((user) => {
-            if (user._id === newMessageReceived.sender._id) return;
-            console.log("Message received by:", user._id);
-            socket.in(user._id).emit("message received", newMessageReceived);
-        });
-    };
-    const joinChatHandler = (chatId) => {
-        socket.join(chatId)
-        socket.hasJoined = true;
-        console.log("chat joined:", chatId._id);
+	// Join specific chat room
+	socket.on("join chat", (room) => {
+		socket.join(room._id);
+		console.log("User joined chat room:", room._id);
+	});
 
-    }
+	// Typing indicators
+	socket.on("typing", (room, user) => {
+		socket.to(room._id).emit("typing", room, user)
+	}
+	);
+	socket.on("stop typing", (room, user) => {
+		console.log(room.chatName);
+		socket.to(room._id).emit("stop typing", room, user)
+	});
 
-    const typingHandle = (chat, sendUser) => {
-        console.log("typing");
-        
-        chat?.users?.forEach((user) => {
-            if (user._id === sendUser) return
-            socket.in(user._id).emit("styping", chat._id)
-        })
-    }
-    const stopTypingHandle = (chat, sendUser) => {
-        console.log("stop_typing");
-        
-        chat.users.forEach((user) => {
-            if (user._id === sendUser) return
-            socket.in(user._id).emit("sstyping", chat._id)
-        })
-    }
+	// Send message
+	socket.on("new message", async (newMessage) => {
+		const chat = newMessage.chat;
+		if (!chat.users) return console.log("Chat users not defined");
 
-    socket.on("setup", setupHandler);
-    socket.on("new message", newMessageHandler);
-    socket.on("join_chat", joinChatHandler)
-    socket.on("typing", typingHandle)
-    socket.on("stop_typing", stopTypingHandle)
+		// Save message to DB (optional if already saved)
+		// const message = await Message.create(newMessage);
 
-    socket.on('disconnect', () => {
-        console.log('User disconnected: ' + socket.id);
-        socket.off("setup", setupHandler);
-        socket.off("new message", newMessageHandler);
-        socket.off("typing", typingHandle)
-        socket.off("stop_typing", stopTypingHandle)
-    });
+		chat.users.forEach((user) => {
+			if (user._id === newMessage.sender._id) return;
+			socket.to(user._id).emit("message received", newMessage);
+		});
+	});
+
+	socket.on("disconnect", () => {
+		for (let [userId, id] of onlineUsers.entries()) {
+			if (id === socket.id) {
+				onlineUsers.delete(userId);
+				break;
+			}
+		}
+		io.emit("online users", Array.from(onlineUsers.keys()));
+		console.log("Client disconnected:", socket.id);
+	});
 });
 server.listen(PORT, () => {
-    console.log(`Server is running port: ${PORT}`);
+	console.log(`Server is running port: ${PORT}`);
 })

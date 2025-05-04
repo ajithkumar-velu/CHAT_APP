@@ -10,7 +10,7 @@ import ChatContainer from './chat/ChatContainer'
 const Chat = () => {
 
   const { selectedChat } = useSelector(state => state.myChat)
-  const authUserId = useSelector(state => state.auth.auth.userInfo._id)
+  const authUserId = useSelector(state => state.auth.auth.userInfo)
   const { isChatLow } = useSelector(state => state.condition)
 
   useEffect(() => {

@@ -4,12 +4,20 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import { Toaster } from 'react-hot-toast';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import GroupRenameModal from './components/modals/GroupRenameModal'
+import socket from './config/socket'
+import { setOnlineUsers } from './redux/slices/conditionSlice'
 
 const App = () => {
   const isLogin = useSelector(store => store.auth.isautenticated)
   const { isLoginLow } = useSelector(state => state.condition)
+  const dispatch = useDispatch()
+
+  socket.on("online users", (onlineUsers) => {
+    dispatch(setOnlineUsers(onlineUsers))
+
+  })
 
   if (isLoginLow) {
     return (
@@ -26,17 +34,17 @@ const App = () => {
         <p>features may change and you might encounter bugs.</p>
       </div>
       <Toaster
-  position="top-center"
-  containerStyle={{
-    position: 'fixed', // Required for z-index to work
-    zIndex: 999999,    // Extremely high value to dominate DaisyUI
-  }}
-  toastOptions={{
-    style: {
-      zIndex: 999999,  // Same as container
-    },
-  }}
-/>
+        position="top-center"
+        containerStyle={{
+          position: 'fixed', // Required for z-index to work
+          zIndex: 999999,    // Extremely high value to dominate DaisyUI
+        }}
+        toastOptions={{
+          style: {
+            zIndex: 999999,  // Same as container
+          },
+        }}
+      />
       <GroupRenameModal />
       <Routes>
         <Route path={'/'} element={isLogin ? <Home /> : <Navigate to='/login' />} />

@@ -41,7 +41,7 @@ const Contact = () => {
         return true
       }
     }
-    ) 
+    )
       .filter((item) => getChatName(item, authUserId).toLowerCase().includes(search.toLocaleLowerCase()))
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const Contact = () => {
 
   const handleOnclickGetUserMessages = (id) => {
 
-    socket.emit("join_chat", id)
+    // socket.emit("join chat", id)
     dispatch(addSelectedChat(id))
     dispatch(setIsChatThreeDotOpen(false))
     dispatch(setIsProfileOpen(false))
@@ -61,21 +61,28 @@ const Contact = () => {
   const handleLogout = () => {
     logoutUser.mutateAsync()
   }
-console.log(filterSerach);
 
-  const handleThemeChange = ()=>{
+  useEffect(() => {
+    if (selectedChat) {
+      socket.emit("join chat", selectedChat);
+    }
+  }, [selectedChat]);
+
+  // Theme change
+  const handleThemeChange = () => {
     const newTheme = theme === "nord" ? "black" : "nord"
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
   }
-  useEffect(()=>{
-      const savedTheme = localStorage.getItem("theme")
-      if(savedTheme){
-        setTheme(savedTheme)
-        document.documentElement.setAttribute("data-theme", savedTheme);
-      }
-    }, [])
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme")
+    if (savedTheme) {
+      setTheme(savedTheme)
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+  }, [])
 
   return (
     <div className={`bg-base-300 md:max-w-2xs w-full py-5  flex-col gap-3 px-2 overflow-y-auto relative ${selectedChat ? "md:flex hidden" : "flex"}`} >
@@ -96,8 +103,8 @@ console.log(filterSerach);
           <div tabIndex={0} role="button" className="m-1 cursor-pointer"><EllipsisVertical /></div>
           <ul tabIndex={0} className="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-sm">
             <li onClick={handleThemeChange} ><a><Palette /> Themes</a></li>
-            <li onClick={()=>document.getElementById('myProfile').showModal()} ><a><User/>Profile</a></li>
-            <li onClick={handleLogout} ><a><LogOutIcon/> Logout</a></li>
+            <li onClick={() => document.getElementById('myProfile').showModal()} ><a><User />Profile</a></li>
+            <li onClick={handleLogout} ><a><LogOutIcon /> Logout</a></li>
           </ul>
         </div>
 
@@ -129,11 +136,11 @@ console.log(filterSerach);
 
               <div key={idxx} onClick={() => handleOnclickGetUserMessages(user)} className={`px-3 py-3 rounded-xl flex items-center gap-2 hover:bg-base-100 cursor-pointer ${selectedChat?._id === user._id ? "bg-base-100" : "bg-base-200"}`} >
                 <div className='size-12 rounded-full overflow-hidden' >
-                  <img src={ user?.profile || getChatImage(user, authUserId) || images.avatar} alt="" />
+                  <img src={user?.profile || getChatImage(user, authUserId) || images.avatar} alt="" />
                 </div>
                 <div >
                   <p className='text-[17px] text-base-content/90 font-semibold' >{getChatName(user, authUserId)}</p>
-                  <p className='text-xs text-zinc-400' >{user.latestMessage?.message  }</p>
+                  <p className='text-xs text-zinc-400' >{user.latestMessage?.message}</p>
                 </div>
               </div>
             ))}

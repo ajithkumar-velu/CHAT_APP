@@ -68,7 +68,7 @@ const Profile = () => {
                   }
                 </div>
                 
-                {selectedChat.groupAdmin._id === authUser._id && <label className=' absolute bg-base-200 hover:bg-secondary bg- cursor-pointer p-3 rounded-full right-4 bottom-5 z-[100px]' >
+                {selectedChat.isGroupChat  && selectedChat.groupAdmin._id === authUser._id && <label className=' absolute bg-base-200 hover:bg-secondary bg- cursor-pointer p-3 rounded-full right-4 bottom-5 z-[100px]' >
                   <input onChange={handleProfileUpdate} type="file" className=' hidden' accept='image/*' />
                   <span>
                     <Camera className='size-6 text-base-content' />
