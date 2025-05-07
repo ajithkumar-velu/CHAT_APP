@@ -79,7 +79,7 @@ const AddNewUserToGroup = () => {
                     <div></div>
                     <div className='flex gap-1' >
                         <button className="rounded-full py-2 px-7 w-fit mt-2 cursor-pointer hover:text-white" >Cancel</button>
-                        <button onClick={handleNewUserToGroup} className="rounded-full py-2 px-7 w-fit mt-2 bg-red-700 text-base-content cursor-pointer hover:bg-red-700/90" >Add Users</button>
+                        <button onClick={handleNewUserToGroup} className="rounded-full py-2 px-7 w-fit mt-2 bg-green-700 text-base-content cursor-pointer hover:bg-red-700/90" >Add Users</button>
                     </div>
                 </form>
             </div>

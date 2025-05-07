@@ -18,6 +18,7 @@ const Chat = () => {
     socket.emit("setup", authUserId);
     // socket.on("connected", () => dispatch(setSocketConnected(true)));
   }, [authUserId]);
+  
 
   if (!selectedChat) {
     return (

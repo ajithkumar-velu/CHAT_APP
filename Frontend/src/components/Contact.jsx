@@ -50,14 +50,13 @@ const Contact = () => {
 
 
   const handleOnclickGetUserMessages = (id) => {
-
-    // socket.emit("join chat", id)
     dispatch(addSelectedChat(id))
+    // socket.off("clear char")
     dispatch(setIsChatThreeDotOpen(false))
     dispatch(setIsProfileOpen(false))
-    // dispatch(setIsTyping(false))
     getAllMessage.mutateAsync(id._id)
   }
+
   const handleLogout = () => {
     logoutUser.mutateAsync()
   }
@@ -83,6 +82,18 @@ const Contact = () => {
       document.documentElement.setAttribute("data-theme", savedTheme);
     }
   }, [])
+
+  // delete group
+  useEffect(() => {
+
+    socket.on("delete group", (newMessage) => {
+      if (newMessage.chat._id === selectedChat._id) {
+        dispatch(addSelectedChat(null))
+      }
+    }); 
+    return () => socket.off("delete group");
+    
+  });
 
   return (
     <div className={`bg-base-300 md:max-w-2xs w-full py-5  flex-col gap-3 px-2 overflow-y-auto relative ${selectedChat ? "md:flex hidden" : "flex"}`} >

@@ -44,7 +44,7 @@ const Header = () => {
         socket.on("typing", handelLog)
         return () => { socket.off("typing", handelLog) }
     })
-    console.log(selectedChat?.users.filter(i => i._id !== authUserId)[0]?._id);
+    // console.log(selectedChat?.users.filter(i => i._id !== authUserId)[0]?._id);
 
 
     return (

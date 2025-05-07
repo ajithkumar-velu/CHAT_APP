@@ -1,23 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Home from './pages/Home'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux'
 import GroupRenameModal from './components/modals/GroupRenameModal'
 import socket from './config/socket'
 import { setOnlineUsers } from './redux/slices/conditionSlice'
+import { addAllMessages } from './redux/slices/messageSlice'
 
 const App = () => {
   const isLogin = useSelector(store => store.auth.isautenticated)
   const { isLoginLow } = useSelector(state => state.condition)
+  const { selectedChat } = useSelector(state => state.myChat)
   const dispatch = useDispatch()
 
   socket.on("online users", (onlineUsers) => {
     dispatch(setOnlineUsers(onlineUsers))
 
   })
+  useEffect(()=>{
+
+    socket.on("clear chat", (chat, username) => {
+      if (selectedChat && chat._id === selectedChat?._id) {
+        dispatch(addAllMessages([]))
+        toast.error(`${username} has clear the chat`)
+      }
+    })
+  }, [selectedChat, dispatch])
 
   if (isLoginLow) {
     return (

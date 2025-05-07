@@ -6,6 +6,7 @@ import { addAuth, removeAuth } from '../redux/slices/authSlice'
 import { data, useNavigate} from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { setIsLoginLow, setIsProfileLow } from '../redux/slices/conditionSlice'
+import socket from '../config/socket'
 const useAuthMutations = ()=>{
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -66,6 +67,7 @@ const useAuthMutations = ()=>{
             
             dispatch(addAuth(data))
             toast.success("Profile Updated")
+            socket.emit("update profile", data)
         },
         onError: (err)=>{
             toast(err.reponse?.data?.message)
