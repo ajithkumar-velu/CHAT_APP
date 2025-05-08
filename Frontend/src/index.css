@@ -3,5 +3,5 @@
   themes: all;
 } 
 .modal, .modal-box {
-  z-index: 50 !important;
+  /* z-index: 50 !important; */
 }

@@ -3,17 +3,24 @@ import React from 'react'
 import useChatMutation from '../../hooks/chatHook'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetSelectedChat } from '../../redux/slices/chatSlice'
+import socket from '../../config/socket'
 
 const DeleteCharModal = () => {
 
   const { deleteGroup, getChats } = useChatMutation()
   const { selectedChat } = useSelector(state => state.myChat)
+  const authUserId = useSelector(state => state.auth.auth.userInfo)
   const dispatch = useDispatch()
+
   const handleDeleteGroup = async ()=>{
     await deleteGroup.mutateAsync(selectedChat._id)
+    socket.emit("delete group", selectedChat, authUserId.fullname)
     dispatch(resetSelectedChat())
     await getChats.mutateAsync()
+    return ()=>socket.off("delete group")
   }
+
+  
 
   return (
     <dialog id="my_modal_3" className="modal">

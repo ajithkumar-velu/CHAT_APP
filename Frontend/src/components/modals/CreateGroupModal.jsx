@@ -5,22 +5,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import useChatMutation from '../../hooks/chatHook'
 import { addGroupDescription, addGroupName, resetGroupData } from '../../redux/slices/chatSlice'
 import { setIsGroup, setNewChatOpen } from '../../redux/slices/conditionSlice'
+import socket from '../../config/socket'
 
 const CreateGroupModal = () => {
   const dispatch = useDispatch()
   const { createGroupUsersData } = useSelector(state => state.condition)
   const { getChats } = useChatMutation()
   const { groupData } = useSelector(state => state.myChat)
+  const { selectedChat } = useSelector(state => state.myChat)
+  const authUserId = useSelector(state => state.auth.auth.userInfo)
   const { chat } = useSelector(state => state.myChat)
   
   
   const { createGroup } = useChatMutation()
   const handlesendDataCreateGroupData = async () => {
     createGroup.mutateAsync(groupData)
+    socket.emit("create group", groupData, authUserId.fullname)
     dispatch(resetGroupData())
     dispatch(setNewChatOpen(false))
     await getChats.mutateAsync()
     dispatch(setIsGroup(false))
+    return ()=>socket.off("create group")
   }
 
   return (

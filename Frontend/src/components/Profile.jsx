@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Camera, CircleMinus, Pencil, Trash, UserRoundPlus } from 'lucide-react';
 import { images } from '../assets/assets';
 import { setIsProfileOpen } from '../redux/slices/conditionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { simpleDate, SimpleDateMonthDay } from '../utils/formateDateTime';
-import { addRemoveFromGroupUser, setAddNewUserToGroup, setRenameGroupName } from '../redux/slices/chatSlice';
+import { addMyChat, addRemoveFromGroupUser, addSelectedChat, setAddNewUserToGroup, setRenameGroupName } from '../redux/slices/chatSlice';
 import useChatMutation from '../hooks/chatHook';
+import socket from '../config/socket';
 
 const Profile = () => {
   const dispatch = useDispatch()
@@ -15,6 +16,9 @@ const Profile = () => {
   const { selectedChat } = useSelector(state => state.myChat)
   const { addUpdateGroupProfile } = useChatMutation()
   const { isGroupProfileLow } = useSelector(state => state.condition)
+  const myChatsUsers = useSelector(state => state.myChat.chat)
+  // console.log(myChatsUsers);
+  
   const profileUser = selectedChat.isGroupChat ? selectedChat :
     selectedChat.users[0]._id === authUser._id ? selectedChat.users[1] : selectedChat.users[0]
 
@@ -38,7 +42,17 @@ const Profile = () => {
       addUpdateGroupProfile.mutateAsync({ profile: reader.result, chatId: selectedChat._id })
     }
   }
+  useEffect(()=>{
 
+    socket.on("update profile", (chat) => {
+      if (selectedChat && chat._id === selectedChat?._id) {
+        let val = myChatsUsers.filter(c=>c._id !== chat._id)
+        val.unshift(chat)
+        dispatch(addMyChat(val))
+        dispatch(addSelectedChat(chat))
+      }
+    })
+  }, [selectedChat, dispatch])
 
   return (
     <div className=" bg-base-300 overflow-y-auto flex flex-col items-center ">

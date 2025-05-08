@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar'
 import Contact from '../components/Contact'
 import Chat from '../components/Chat'
 import CreateGroupModal from '../components/modals/CreateGroupModal'
-import ClearCharModal from '../components/modals/ClearCharModal'
+// import ClearCharModal from '../components/modals/ClearCharModal'
 import DeleteCharModal from '../components/modals/DeleteCharModal'
 import RemoveFromGroup from '../components/modals/RemoveFromGroup'
 import AddNewUserToGroup from '../components/modals/AddNewUserToGroup'
@@ -20,7 +20,7 @@ const Home = () => {
             <Contact />
             <Chat />
             <CreateGroupModal />
-            <ClearCharModal />
+            {/* <ClearCharModal /> */}
             <DeleteCharModal />
             <RemoveFromGroup />
             <AddNewUserToGroup />

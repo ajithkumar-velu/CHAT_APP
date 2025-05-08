@@ -53,11 +53,11 @@ const io = new Server(server, {
 
 let onlineUsers = new Map();
 
-// Socket.io connection
+
 io.on("connection", (socket) => {
 	console.log("New client connected:", socket.id);
 
-	// Join user to their own room (user id)
+	// Join user
 	socket.on("setup", (userData) => {
 		onlineUsers.set(userData._id, socket.id);
 		console.log(onlineUsers);
@@ -69,8 +69,17 @@ io.on("connection", (socket) => {
 
 	// Join specific chat room
 	socket.on("join chat", (room) => {
+		if (socket.currentRoom) {
+			if (socket.currentRoom === room._id) {
+				console.log(`User already in Room: ${room._id}`);
+				return;
+			}
+			socket.leave(socket.currentRoom);
+			console.log(`User left Room: ${socket.currentRoom}`);
+		}
 		socket.join(room._id);
-		console.log("User joined chat room:", room._id);
+		socket.currentRoom = room._id;
+		console.log("User joined Room:", room._id);
 	});
 
 	// Typing indicators
@@ -88,14 +97,27 @@ io.on("connection", (socket) => {
 		const chat = newMessage.chat;
 		if (!chat.users) return console.log("Chat users not defined");
 
-		// Save message to DB (optional if already saved)
-		// const message = await Message.create(newMessage);
-
 		chat.users.forEach((user) => {
 			if (user._id === newMessage.sender._id) return;
 			socket.to(user._id).emit("message received", newMessage);
 		});
 	});
+
+	// clear chat
+	socket.on("clear chat", (room, username)=>{
+		// console.log(room);
+		socket.to(room._id).emit("clear chat", room, username	)
+	})
+	socket.on("update profile", (chat)=>{
+		socket.to(chat._id).emit("update profile", chat)
+	})
+
+	socket.on("delete group", (chat, fullname)=>{
+		io.emit("delete group", chat, fullname)
+	})
+	socket.on("create group", (chat, fullname)=>{
+		io.emit("create group", chat, fullname)
+	})
 
 	socket.on("disconnect", () => {
 		for (let [userId, id] of onlineUsers.entries()) {
