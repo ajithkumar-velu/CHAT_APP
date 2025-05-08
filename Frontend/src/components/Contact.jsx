@@ -141,7 +141,7 @@ const Contact = () => {
                 </div>
                 <div >
                   <p className='text-[17px] text-base-content/90 font-semibold' >{getChatName(user, authUserId)}</p>
-                  <p className='text-xs text-zinc-400' >{user.latestMessage?.message}</p>
+                  <p className='text-xs text-zinc-400' >{user?.latestMessage?.sender._id === authUserId && "You: "}{user.latestMessage?.message}</p>
                 </div>
               </div>
             ))}

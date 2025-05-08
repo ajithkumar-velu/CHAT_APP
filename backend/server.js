@@ -118,6 +118,9 @@ io.on("connection", (socket) => {
 	socket.on("create group", (chat, fullname)=>{
 		io.emit("create group", chat, fullname)
 	})
+	socket.on("removeFromGroup", (chat, removeUser)=>{
+		io.emit("removeFromGroup", chat, removeUser)
+	})
 
 	socket.on("disconnect", () => {
 		for (let [userId, id] of onlineUsers.entries()) {

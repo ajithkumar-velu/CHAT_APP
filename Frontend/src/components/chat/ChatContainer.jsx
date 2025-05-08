@@ -5,6 +5,7 @@ import { images } from '../../assets/assets'
 import { addAllMessages, addNewMessage } from '../../redux/slices/messageSlice'
 import socket from '../../config/socket'
 import toast from 'react-hot-toast'
+import { addSelectedChat } from '../../redux/slices/chatSlice'
 
 const ChatContainer = () => {
     const bottomRef = useRef(null);
@@ -18,6 +19,7 @@ const ChatContainer = () => {
         const messageHandler = (newMessage) => {
             if (newMessage.chat._id === selectedChat._id) {
                 dispatch(addNewMessage(newMessage));
+                
             }
         };
         socket.on("message received", messageHandler); // Use the named function here

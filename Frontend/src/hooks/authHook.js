@@ -59,9 +59,7 @@ const useAuthMutations = ()=>{
     const profileUpdate = useMutation({
         mutationFn: performProfileUpdate,
         onMutate: ()=>{
-            
-                dispatch(setIsProfileLow(true))
-            
+            dispatch(setIsProfileLow(true))
         },
         onSuccess: (data)=>{
             
