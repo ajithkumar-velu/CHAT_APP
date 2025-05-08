@@ -3,6 +3,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useChatMutation from '../../hooks/chatHook'
 import { resetSelectedChat } from '../../redux/slices/chatSlice'
+import socket from '../../config/socket'
 
 const RemoveFromGroup = () => {
     const { removeFromGroupUser, selectedChat } = useSelector(state => state.myChat)
@@ -10,6 +11,7 @@ const RemoveFromGroup = () => {
     const dispatch = useDispatch()
     const handleRemoveFromGroup = async ()=>{
         removeFromGroup.mutateAsync({userId: removeFromGroupUser._id, chatId: selectedChat._id})
+        socket.emit("removeFromGroup", selectedChat, removeFromGroupUser)
         dispatch(resetSelectedChat())
             await getChats.mutateAsync()
     }
