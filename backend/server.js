@@ -112,6 +112,13 @@ io.on("connection", (socket) => {
 		socket.to(chat._id).emit("update profile", chat)
 	})
 
+	socket.on("delete group", (chat, fullname)=>{
+		io.emit("delete group", chat, fullname)
+	})
+	socket.on("create group", (chat, fullname)=>{
+		io.emit("create group", chat, fullname)
+	})
+
 	socket.on("disconnect", () => {
 		for (let [userId, id] of onlineUsers.entries()) {
 			if (id === socket.id) {

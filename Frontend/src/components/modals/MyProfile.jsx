@@ -39,7 +39,7 @@ const MyProfile = () => {
                                     <div className='w-full h-full flex items-center justify-center bg-secondary skeleton' >
                                         <p className='loading-md loading' ></p>
                                     </div>:
-                                    <img className='w-full h-full object-cover' src={userInfo.profile || images.avatar} alt="" />
+                                    <img className='w-full h-full object-cover' src={userInfo?.profile || images.avatar} alt="" />
                                 }
                                 </div>
                                 
@@ -90,7 +90,7 @@ const MyProfile = () => {
                         <CalendarDays />
                         <div>
                             <p className='font-semibold' >Since</p>
-                            <p className='' >{simpleDate(userInfo.createdAt)}</p>
+                            <p className='' >{simpleDate(userInfo?.createdAt)}</p>
                         </div>
                     </div>
 

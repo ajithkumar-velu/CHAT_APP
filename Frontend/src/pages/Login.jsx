@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 
 const Login = () => {
     const [fromData, setFormData] = useState({
-        email: "",
-        password: ""
+        email: "guest@gmaill.com",
+        password: "password"
     })
     const { loginUser } = useAuthMutations()
 

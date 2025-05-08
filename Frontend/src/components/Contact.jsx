@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setIsChatThreeDotOpen, setIsProfileOpen, setNewChatOpen } from '../redux/slices/conditionSlice'
 import { getChatImage, getChatName } from '../utils/getNameImage'
 import useMessageMutation from '../hooks/messageHooks'
-import { addSelectedChat } from '../redux/slices/chatSlice'
+import { addMyChat, addSelectedChat, resetSelectedChat } from '../redux/slices/chatSlice'
 import useAuthMutations from '../hooks/authHook'
 import socket from '../config/socket'
 import GetMyChatSkeleton from './skeleton/GetMyChatSkeleton'
 import Drawer from './Profile'
+import toast from 'react-hot-toast'
 
 const Contact = () => {
   const [chatCategory, setChatCategory] = useState('allChats')
@@ -83,17 +84,6 @@ const Contact = () => {
     }
   }, [])
 
-  // delete group
-  useEffect(() => {
-
-    socket.on("delete group", (newMessage) => {
-      if (newMessage.chat._id === selectedChat._id) {
-        dispatch(addSelectedChat(null))
-      }
-    }); 
-    return () => socket.off("delete group");
-    
-  });
 
   return (
     <div className={`bg-base-300 md:max-w-2xs w-full py-5  flex-col gap-3 px-2 overflow-y-auto relative ${selectedChat ? "md:flex hidden" : "flex"}`} >

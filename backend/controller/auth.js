@@ -20,7 +20,7 @@ export const register = async (req, res) => {
             about
         })
         if (newUser) {
-            getentateToken(newUser._id, res)
+            // getentateToken(newUser._id, res)
             await newUser.save()
             return res.status(200).json({ message: "Register Successfull", fullname: newUser.fullname, email: newUser.email, about: newUser.about, profile: newUser.profile })
         }

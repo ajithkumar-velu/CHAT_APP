@@ -15,7 +15,7 @@ const useAuthMutations = ()=>{
         mutationFn: performSignup,
         onSuccess: (data)=>{
             toast.success(data.message)
-            dispatch(addAuth(data))
+            // dispatch(addAuth(data))
             navigate('/login')
         },
         onError: (err)=>{
