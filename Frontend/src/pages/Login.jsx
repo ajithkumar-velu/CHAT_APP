@@ -5,8 +5,8 @@ import { images } from '../assets/assets'
 
 const Login = () => {
     const [fromData, setFormData] = useState({
-        email: "",
-        password: ""
+        email: "guest@gmaill.com",
+        password: "password"
     })
     const { loginUser } = useAuthMutations()
 
