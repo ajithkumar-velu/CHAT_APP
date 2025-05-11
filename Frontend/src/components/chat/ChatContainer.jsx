@@ -2,9 +2,8 @@ import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { chatMessageTime, groupMessagesByDate } from '../../utils/formateDateTime'
 import { images } from '../../assets/assets'
-import { addAllMessages, addNewMessage } from '../../redux/slices/messageSlice'
+import { addNewMessage } from '../../redux/slices/messageSlice'
 import socket from '../../config/socket'
-import toast from 'react-hot-toast'
 
 const ChatContainer = () => {
     const bottomRef = useRef(null);

@@ -1,15 +1,14 @@
 import { Send, Smile } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import socket from '../../config/socket'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearTypingUser, removeTypingUser, setIsTyping } from '../../redux/slices/conditionSlice'
+import { setIsTyping } from '../../redux/slices/conditionSlice'
 import useMessageMutation from '../../hooks/messageHooks'
 
 const SendMessage = () => {
     const [message, setMessage] = useState("")
     const { selectedChat } = useSelector(state => state.myChat)
     const authUserId = useSelector(state => state.auth.auth.userInfo)
-    const { typingUser } = useSelector(state => state.condition)
     const { createMessage } = useMessageMutation()
     const dispatch = useDispatch()
 

@@ -29,8 +29,13 @@ const useChatMutation = () => {
     const postChat = useMutation({
         mutationFn: performPostChat,
         onSuccess: (data) => {
-            toast.success("New User Added")
+            let exists = myChatsUsers.filter(c => c._id === data._id)
+            console.log(exists);
+
             dispathch(addNewChat(data))
+            if (exists.length !== 0) return
+            toast.success("New User Added")
+
         },
         onError: (err) => {
             toast.error(err.response?.data?.message)

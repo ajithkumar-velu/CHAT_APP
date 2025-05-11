@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { useMutation } from '@tanstack/react-query'
 import { performClearChat, performCreateMessage, performGetAllMessages } from "../api/message"
 import { addAllMessages, addNewMessage, addNewMessageId } from "../redux/slices/messageSlice"
@@ -7,8 +7,7 @@ import socket from "../config/socket"
 import { setIsChatLow } from "../redux/slices/conditionSlice"
 const useMessageMutation = () => {
     const dispatch = useDispatch()
-    const { selectedChat } = useSelector(state => state.myChat)
-    const authUserId = useSelector(state => state.auth?.auth?.userInfo?._id)
+    
 
     const getAllMessage = useMutation({
         mutationFn: async (data)=>{

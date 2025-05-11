@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useMutation } from '@tanstack/react-query'
 import { performLogin, performLogout, performProfileUpdate, performSignup } from '../api/auth'
 import { addAuth, removeAuth } from '../redux/slices/authSlice'
-import { data, useNavigate} from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { setIsLoginLow, setIsProfileLow } from '../redux/slices/conditionSlice'
 import socket from '../config/socket'
@@ -15,7 +15,7 @@ const useAuthMutations = ()=>{
         mutationFn: performSignup,
         onSuccess: (data)=>{
             toast.success(data.message)
-            dispatch(addAuth(data))
+            // dispatch(addAuth(data))
             navigate('/login')
         },
         onError: (err)=>{

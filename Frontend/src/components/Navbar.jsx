@@ -6,6 +6,7 @@ import useAuthMutations from '../hooks/authHook'
 
 const Navbar = () => {
   const isLogoutBtn = useSelector(state => state.auth.isautenticated)
+  const authUser = useSelector(state => state?.auth?.auth?.userInfo)
   const { logoutUser} =  useAuthMutations()
   const [theme, setTheme] = useState("black")
 
@@ -56,7 +57,7 @@ const Navbar = () => {
             </svg>
           </label>
         </div>
-        <div onClick={()=>document.getElementById('myProfile').showModal()} className='w-10 cursor-pointer' ><img src={images.avatar} alt="" /></div>
+        <div onClick={()=>document.getElementById('myProfile').showModal()} className='w-10 cursor-pointer rounded-full overflow-hidden' ><img src={ authUser.profile || images.avatar} alt="" /></div>
       </div>
     </div>
   )
