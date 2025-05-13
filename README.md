@@ -43,7 +43,7 @@ A full-stack real-time chat application built using the **MERN Stack**, supporti
 ## 📦 Environment Variables
 
 ### 🔐 Backend `.env`
-```env```
+```env
 PORT=3000
 MONGODB_URL=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
