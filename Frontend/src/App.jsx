@@ -97,10 +97,7 @@ const App = () => {
 
   return (
     <div className='h-screen bg-zinc-800 flex  items-center justify-center'  >
-      <div className='text-wrap text-[10px] z-6 py-1 text-gray-200 fixed bg-yellow-600 px-5 top-1' >
-        <p><span className='text-black font-bold' >Note:</span> This chat app is currently in development.</p>
-        <p>features may change and you might encounter bugs.</p>
-      </div>
+      
       <Toaster
         position="top-center"
         containerStyle={{

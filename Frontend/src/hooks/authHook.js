@@ -64,7 +64,7 @@ const useAuthMutations = ()=>{
         onSuccess: (data)=>{
             
             dispatch(addAuth(data))
-            toast.success("Profile Updated")
+            // toast.success("Profile Updated")
             socket.emit("update profile", data)
         },
         onError: (err)=>{
